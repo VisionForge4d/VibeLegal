@@ -1,0 +1,8 @@
+﻿## Licensing Overview
+
+This project uses dual licensing to balance protection and adoption.
+
+- `/backend` — Licensed under **GNU AGPL v3** to protect core IP and ensure public benefit of derivatives.
+- `/frontend` — Licensed under **MIT** for ease of use, contribution, and integration.
+
+Each folder includes its own `LICENSE` file.
