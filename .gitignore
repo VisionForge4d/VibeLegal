@@ -1,0 +1,18 @@
+# OS + Editor junk
+.DS_Store
+*.swp
+*~
+.~lock.*
+
+# Node/Vite build stuff
+node_modules/
+dist/
+.vite/
+
+# Log files
+*.log
+
+# PDF + export artifacts (optional)
+*.pdf
+release.log
+
