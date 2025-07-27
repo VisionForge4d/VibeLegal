@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const groq = require('groq');
+const GROQ = require('GROQ');
 
 dotenv.config();
 
@@ -17,9 +17,14 @@ const pool = new Pool({
 });
 
 // OpenAI configuration
-const groq = new groq({
-  apiKey: process.env.groq_API_KEY,
+// ✅ REPLACE WITH THIS:
+const OpenAI = require("openai");
+
+const openai = new OpenAI({
+  apiKey: process.env.GROQ_API_KEY,
+  baseURL: "https://api.groq.com/openai/v1",
 });
+
 
 // Middleware
 app.use(cors());
