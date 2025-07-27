@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const GROQ = require('GROQ');
+const OpenAI = require('openai'); // ✅ This replaces OpenAI / Groq setup
 
 dotenv.config();
 
@@ -16,13 +16,10 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-// OpenAI configuration
-// ✅ REPLACE WITH THIS:
-const OpenAI = require("openai");
-
+// OpenAI (via Groq) Configuration
 const openai = new OpenAI({
   apiKey: process.env.GROQ_API_KEY,
-  baseURL: "https://api.groq.com/openai/v1",
+  baseURL: 'https://api.groq.com/openai/v1',
 });
 
 
