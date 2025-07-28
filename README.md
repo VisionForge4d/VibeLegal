@@ -1,41 +1,144 @@
-# VibeLegal - AI-Powered Contract Drafting for Lawyers
+# ⚖️ VibeLegal — AI-Powered Contract Drafting for Lawyers
 
-VibeLegal is a minimal viable product (MVP) that demonstrates an AI-powered contract drafting web application specifically designed for legal professionals. The application combines modern web technologies with OpenAI's GPT models to generate professional, legally compliant contracts quickly and efficiently.
+**VibeLegal** is a lean MVP that enables legal professionals to generate clean, structured contracts using AI. Built with modern web tools and powered by LLMs (Groq/OpenAI), the app provides an efficient interface for secure document generation and management.
+
+---
 
 ## 🚀 Features
 
-### Core Functionality
-- **AI-Powered Contract Generation**: Generate professional contracts using OpenAI's GPT models
-- **Multiple Contract Types**: Support for Employment Agreements, NDAs, Service Contracts, Independent Contractor Agreements, and Purchase Agreements
-- **User Authentication**: Secure registration and login system with JWT tokens
-- **Contract Management**: Save, edit, and manage generated contracts
-- **Responsive Design**: Works seamlessly on desktop and mobile devices
-- **Professional UI**: Clean, modern interface designed specifically for lawyers
+### Core Capabilities
+- **AI Contract Generator**  
+  Draft legally formatted contracts instantly using GPT models.
+  
+- **Multiple Contract Types**  
+  Supports:  
+  - Employment Agreements  
+  - Non-Disclosure Agreements (NDAs)  
+  - Service Contracts  
+  - Independent Contractor Agreements  
+  - Purchase Agreements  
 
-### Technical Features
-- **RESTful API**: Well-structured backend API with proper error handling
-- **Rate Limiting**: Prevents abuse and ensures fair usage
-- **Legal Disclaimers**: All contracts include proper legal disclaimers
-- **Subscription Management**: Basic and Premium tier support
-- **PDF Export**: Download contracts as HTML files (easily convertible to PDF)
+- **Secure Authentication**  
+  Email/password login with JWT token-based access control.
 
-## 🏗️ Architecture
+- **Contract Management**  
+  Save, view, and retrieve previously generated contracts.
 
-### Frontend (React + Tailwind CSS)
-- **Framework**: React 18 with modern hooks
-- **Styling**: Tailwind CSS with shadcn/ui components
-- **Routing**: React Router for navigation
-- **State Management**: React Context for authentication
-- **Icons**: Lucide React icons
-- **Build Tool**: Vite for fast development and building
+- **Responsive Design**  
+  Desktop + mobile optimized.
 
-### Backend (Node.js + Express)
-- **Runtime**: Node.js with Express.js framework
-- **Database**: PostgreSQL with native pg driver
-- **Authentication**: JWT tokens with bcryptjs for password hashing
-- **AI Integration**: OpenAI API for contract generation
-- **Security**: CORS enabled, rate limiting, input validation
+- **Legal Disclaimers**  
+  Every contract includes an AI usage disclaimer.
 
-### Database Schema
-- **Users Table**: User accounts with subscription tiers and usage tracking
-- **Contracts Table**: Generated contracts with metadata and content
+---
+
+## ⚙️ Tech Stack
+
+### 🖼️ Frontend – `frontend/`
+- **Framework:** React 18  
+- **Styling:** Tailwind CSS + [shadcn/ui](https://ui.shadcn.com/)  
+- **Routing:** React Router  
+- **State:** Context API for auth/session  
+- **Build Tool:** Vite  
+- **Icons:** `lucide-react`
+
+### 🔧 Backend – `backend/`
+- **Runtime:** Node.js with Express.js  
+- **Database:** PostgreSQL (via `pg`)  
+- **Authentication:** JWT, bcryptjs  
+- **AI API:** Groq/OpenAI GPT  
+- **Security:** CORS, input validation, rate limiting
+
+---
+
+## 🗂️ Database Schema
+
+### `users`
+| Field | Type | Description |
+|-------|------|-------------|
+| id | UUID | Primary key |
+| email | String | Unique user email |
+| password_hash | String | Bcrypt hash |
+| subscription_tier | Enum | `basic` / `premium` |
+| contracts_used_this_month | Int | Usage tracking |
+| created_at | Timestamp | — |
+
+### `contracts`
+| Field | Type | Description |
+|-------|------|-------------|
+| id | UUID | Primary key |
+| user_id | UUID | FK to `users` |
+| title | String | User-supplied name |
+| contract_type | String | Type of contract |
+| content | Text | Full contract body |
+| created_at | Timestamp | — |
+
+---
+
+## 🧪 Development
+
+### Prerequisites
+- Node.js (v18+)
+- PostgreSQL
+- Groq or OpenAI API key
+
+### Environment Setup
+
+Create `.env` files for both frontend and backend.
+
+#### `backend/.env` template:
+PORT=5000
+DATABASE_URL=postgresql://<username>:<password>@localhost:5432/vibelegal
+JWT_SECRET=your_jwt_secret
+GROQ_API_KEY=your_groq_api_key
+
+shell
+Copy
+Edit
+
+#### `frontend/.env` template:
+VITE_API_URL=http://localhost:5000
+
+yaml
+Copy
+Edit
+
+---
+
+## 🛠️ Usage
+
+```bash
+# backend
+cd backend
+npm install
+npm run dev
+
+# frontend
+cd frontend
+npm install
+npm run dev
+App should be accessible at: http://localhost:5173
+
+🔒 Disclaimer
+LEGAL DISCLAIMER: This software uses AI to generate contracts. All output should be reviewed by a qualified attorney before use. This does not constitute legal advice.
+
+📜 License
+MIT License (see LICENSE file)
+
+✨ Status
+This is a Minimum Viable Product — future improvements may include:
+
+Editable rich text contracts
+
+Stripe integration
+
+Premium user tier limits
+
+PDF exports with signature blocks
+
+Jurisdiction-specific templates
+
+🧠 Author
+Luke @ VisionForge4D
+AI Systems Architect · Builder of Sovereign Tooling
+visionforge4d.gumroad.com
