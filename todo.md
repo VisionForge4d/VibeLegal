@@ -41,3 +41,30 @@
 - [ ] Provide setup and deployment instructions
 - [ ] Deliver all files to user
 
+# VibeLegal — Development TODO
+
+## 🧠 Frontend
+
+- [ ] Add `.env` with `VITE_API_URL=http://localhost:5000`
+- [ ] Ensure all API calls use `import.meta.env.VITE_API_URL`
+- [ ] Clean up error handling UI for contract generation
+- [ ] Add loading indicators for contract generation
+- [ ] Style login/registration forms
+- [ ] Add logout functionality
+
+## 🧠 Backend
+
+- [ ] Clean error output from `server.js` logs
+- [ ] Create test route for verifying Groq key health
+- [ ] Add `/api/account` endpoint to fetch current user info
+- [ ] Add `/api/upgrade` stub for subscription handling
+- [ ] Implement rate-limiting database reset logic (monthly rollover)
+- [ ] Add basic unit tests (if desired)
+
+## 🧠 Dev Ops
+
+- [ ] Add `Makefile` or `dev.sh` to run both backend & frontend
+- [ ] Add logging (e.g., morgan) middleware
+- [ ] Dockerize app for easy deployment (optional)
+- [ ]
+

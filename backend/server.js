@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const OpenAI = require('openai'); // ✅ This replaces OpenAI / Groq setup
+const { OpenAI } = require("openai");
 
 dotenv.config();
 
@@ -18,10 +18,9 @@ const pool = new Pool({
 
 // OpenAI (via Groq) Configuration
 const openai = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY,
+  apiKey: process.env.GROQ_API_KEY || process.env.OPENAI_API_KEY,  // fallback if needed
   baseURL: 'https://api.groq.com/openai/v1',
 });
-
 
 // Middleware
 app.use(cors());
@@ -152,24 +151,24 @@ app.post('/api/login', async (req, res) => {
 });
 
 // Generate contract
+const axios = require('axios'); // make sure this is at the top of your file
+
 app.post('/api/generate-contract', rateLimitMiddleware, authenticateToken, async (req, res) => {
   try {
     const { contractType, requirements, clientName, otherPartyName, jurisdiction } = req.body;
-    
+
     if (!contractType || !requirements || !clientName || !otherPartyName || !jurisdiction) {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
-    // Check user's contract limit
     const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.userId]);
     const user = userResult.rows[0];
-    
+
     if (user.subscription_tier === 'basic' && user.contracts_used_this_month >= 25) {
       return res.status(403).json({ error: 'Monthly contract limit reached. Please upgrade your subscription.' });
     }
 
-    // Generate contract using OpenAI
-    const prompt = `Generate a ${contractType} for ${jurisdiction} with the following requirements: ${requirements}. 
+    const prompt = `Generate a ${contractType} for ${jurisdiction} with the following requirements: ${requirements}.
 
 The contract should be between:
 - Client: ${clientName}
@@ -181,25 +180,34 @@ IMPORTANT: Add a disclaimer at the end stating: "LEGAL DISCLAIMER: This document
 
 Format the contract with proper headings, numbered sections, and clear structure.`;
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [
-        {
-          role: "system",
-          content: "You are a legal document assistant that generates professional contracts. Always include proper legal disclaimers and formatting."
-        },
-        {
-          role: "user",
-          content: prompt
+    // ✅ THIS is what was missing or misplaced:
+    const completion = await axios.post(
+      'https://api.groq.com/openai/v1/chat/completions',
+      {
+        model: "llama3-70b-8192",
+        messages: [
+          {
+            role: "system",
+            content: "You are a legal document assistant that generates professional contracts. Always include proper legal disclaimers and formatting."
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        max_tokens: 2000,
+        temperature: 0.3,
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+          'Content-Type': 'application/json'
         }
-      ],
-      max_tokens: 2000,
-      temperature: 0.3,
-    });
+      }
+    );
 
-    const generatedContract = completion.choices[0].message.content;
+    const generatedContract = completion.data.choices[0].message.content;
 
-    // Update user's contract count
     await pool.query(
       'UPDATE users SET contracts_used_this_month = contracts_used_this_month + 1 WHERE id = $1',
       [req.user.userId]
@@ -213,7 +221,12 @@ Format the contract with proper headings, numbered sections, and clear structure
       jurisdiction
     });
   } catch (error) {
-    console.error('Contract generation error:', error);
+    console.error('Contract generation error:', error.message);
+    if (error.response) {
+      console.error('Groq error status:', error.response.status);
+      console.error('Groq error data:', error.response.data);
+    }
+
     if (error.code === 'insufficient_quota') {
       res.status(503).json({ error: 'AI service temporarily unavailable. Please try again later.' });
     } else {
@@ -222,29 +235,6 @@ Format the contract with proper headings, numbered sections, and clear structure
   }
 });
 
-// Save contract
-app.post('/api/save-contract', authenticateToken, async (req, res) => {
-  try {
-    const { title, contractType, content } = req.body;
-    
-    if (!title || !contractType || !content) {
-      return res.status(400).json({ error: 'Title, contract type, and content are required' });
-    }
-
-    const result = await pool.query(
-      'INSERT INTO contracts (user_id, contract_type, content, title, created_at) VALUES ($1, $2, $3, $4, NOW()) RETURNING *',
-      [req.user.userId, contractType, content, title]
-    );
-
-    res.status(201).json({
-      message: 'Contract saved successfully',
-      contract: result.rows[0]
-    });
-  } catch (error) {
-    console.error('Save contract error:', error);
-    res.status(500).json({ error: 'Failed to save contract' });
-  }
-});
 
 // Get user contracts
 app.get('/api/user-contracts', authenticateToken, async (req, res) => {
@@ -294,7 +284,7 @@ app.use((err, req, res, next) => {
 
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`);
+  console.debug(`Server running on port ${PORT}`);
 });
 
 module.exports = app;

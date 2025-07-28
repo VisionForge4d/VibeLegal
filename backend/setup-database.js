@@ -4,7 +4,7 @@ const path = require('path');
 require('dotenv').config();
 
 async function setupDatabase() {
-  console.log('🚀 Setting up VibeLegal database...');
+  console.debug('🚀 Setting up VibeLegal database...');
   
   const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
@@ -13,22 +13,22 @@ async function setupDatabase() {
 
   try {
     // Test connection
-    console.log('📡 Testing database connection...');
+    console.debug('📡 Testing database connection...');
     await pool.query('SELECT NOW()');
-    console.log('✅ Database connection successful');
+    console.debug('✅ Database connection successful');
 
     // Read and execute schema
-    console.log('📋 Creating database schema...');
+    console.debug('📋 Creating database schema...');
     const schemaSQL = fs.readFileSync(path.join(__dirname, 'database.sql'), 'utf8');
     await pool.query(schemaSQL);
-    console.log('✅ Database schema created');
+    console.debug('✅ Database schema created');
 
     // Check if demo data should be inserted
     const { rows } = await pool.query('SELECT COUNT(*) FROM users');
     const userCount = parseInt(rows[0].count);
 
     if (userCount === 0) {
-      console.log('📝 Inserting demo data...');
+      console.debug('📝 Inserting demo data...');
       const bcrypt = require('bcryptjs');
       
       // Create demo users with hashed passwords
@@ -52,16 +52,16 @@ async function setupDatabase() {
          NOW() - INTERVAL ''1 day'')
       `);
       
-      console.log('✅ Demo data inserted');
+      console.debug('✅ Demo data inserted');
     } else {
-      console.log('ℹ️  Database already contains data, skipping demo data insertion');
+      console.debug('ℹ️  Database already contains data, skipping demo data insertion');
     }
 
-    console.log('\n🎉 Database setup complete!');
-    console.log('\n📋 Demo Accounts:');
-    console.log('• demo@vibelegal.com (Password: DemoPassword123!)');
-    console.log('• premium@vibelegal.com (Password: DemoPassword123!)');
-    console.log('• lawyer@lawfirm.com (Password: DemoPassword123!)');
+    console.debug('\n🎉 Database setup complete!');
+    console.debug('\n📋 Demo Accounts:');
+    console.debug('• demo@vibelegal.com (Password: DemoPassword123!)');
+    console.debug('• premium@vibelegal.com (Password: DemoPassword123!)');
+    console.debug('• lawyer@lawfirm.com (Password: DemoPassword123!)');
 
   } catch (error) {
     console.error('❌ Database setup failed:', error.message);
