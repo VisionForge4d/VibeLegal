@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../App';
-import { Button } from '@/components/ui/button';
+import AuthContext from "./contexts/AuthContext";
+import { Button } from './ui/button';
 import { Scale, Menu, X } from 'lucide-react';
 
 const Navbar = () => {

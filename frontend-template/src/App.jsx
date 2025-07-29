@@ -3,28 +3,27 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import './App.css';
 
 // Components
-import Navbar from './components/Navbar';
-import LandingPage from './components/LandingPage';
-import Login from './components/Login';
-import Register from './components/Register';
-import ContractForm from './components/ContractForm';
-import ContractResult from './components/ContractResult';
-import Dashboard from './components/Dashboard';
-import Pricing from './components/Pricing';
-import DemoNotice from './components/DemoNotice';
+import Navbar from "./Navbar";
+import LandingPage from "./LandingPage";
+import Login from "./Login";
+import Register from "./Register";
+import ContractForm from "./ContractForm";
+import ContractResult from "./ContractResult";
+import Dashboard from "./Dashboard";
+import Pricing from "./Pricing";
+import DemoNotice from "./DemoNotice";
+import AuthContext from './contexts/AuthContext';
 
 // Context for authentication
-export const AuthContext = React.createContext();
 
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in on app start
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
-    
+
     if (token && userData) {
       setUser(JSON.parse(userData));
     }
@@ -55,24 +54,24 @@ function App() {
     <AuthContext.Provider value={{ user, login, logout }}>
       <Router>
         <div className="min-h-screen bg-gray-50">
-          <DemoNotice />
+          {import.meta.env.MODE === 'development' && <DemoNotice />}
           <Navbar />
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
             <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route 
-              path="/dashboard" 
-              element={user ? <Dashboard /> : <Navigate to="/login" />} 
+            <Route
+              path="/dashboard"
+              element={user ? <Dashboard /> : <Navigate to="/login" />}
             />
-            <Route 
-              path="/create-contract" 
-              element={user ? <ContractForm /> : <Navigate to="/login" />} 
+            <Route
+              path="/create-contract"
+              element={user ? <ContractForm /> : <Navigate to="/login" />}
             />
-            <Route 
-              path="/contract-result" 
-              element={user ? <ContractResult /> : <Navigate to="/login" />} 
+            <Route
+              path="/contract-result"
+              element={user ? <ContractResult /> : <Navigate to="/login" />}
             />
           </Routes>
         </div>
@@ -82,4 +81,3 @@ function App() {
 }
 
 export default App;
-
