@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: vibelegal-v2
+    env: node
+    plan: starter
+    region: oregon
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: LLM_PROVIDER
+        value: null
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: vibelegal-v2-db
+          property: connectionString
+    autoDeploy: false
+
+databases:
+  - name: vibelegal-v2-db
+    databaseName: vibelegal_v2
+    user: vibelegal_user
+    plan: starter
+    region: oregon
+
