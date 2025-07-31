@@ -4,72 +4,39 @@ const dotenv = require('dotenv');
 const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const path = require('path');
-const { compilePrompt } = require('../prompt-engine/utils/compilePrompt');
-const axios = require('axios');
-const { OpenAI } = require("openai");
 
+// --- Load Environment Variables ---
 dotenv.config();
 
+// --- Middleware Imports ---
+const { authenticateToken } = require('./src/middleware/authenticateToken.js');
+const { rateLimitMiddleware } = require('./src/middleware/rateLimit.js');
+
+// --- Route Imports ---
+// FIX: Added the .js extension to make the import path explicit.
+const contractRoutes = require('./src/routes/contracts.js');
+
+// --- App Initialization ---
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Database connection
+// --- Database Connection Pool ---
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-// OpenAI (via Groq) Configuration
-const openai = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY || process.env.OPENAI_API_KEY,
-  baseURL: 'https://api.groq.com/openai/v1',
-});
-
-// Middleware
+// --- Core Middleware ---
 app.use(cors());
 app.use(express.json());
 
-// Rate limiting
-const rateLimit = {};
-const RATE_LIMIT_WINDOW = 60 * 1000;
-const MAX_REQUESTS = 10;
+// --- API Routes ---
+// This line mounts our contract router. The error was caused by it
+// not being imported correctly.
+app.use('/api', contractRoutes);
 
-const rateLimitMiddleware = (req, res, next) => {
-  const ip = req.ip;
-  const now = Date.now();
 
-  if (!rateLimit[ip]) {
-    rateLimit[ip] = { count: 1, resetTime: now + RATE_LIMIT_WINDOW };
-  } else if (now > rateLimit[ip].resetTime) {
-    rateLimit[ip] = { count: 1, resetTime: now + RATE_LIMIT_WINDOW };
-  } else {
-    rateLimit[ip].count++;
-  }
-
-  if (rateLimit[ip].count > MAX_REQUESTS) {
-    return res.status(429).json({ error: 'Too many requests. Please try again later.' });
-  }
-
-  next();
-};
-
-// Auth middleware
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (!token) {
-    return res.status(401).json({ error: 'Access token required' });
-  }
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      return res.status(403).json({ error: 'Invalid token' });
-    }
-    req.user = user;
-    next();
-  });
-};
+// --- Existing User Authentication Routes ---
+// This logic remains in server.js as it was before.
 
 // User registration
 app.post('/api/register', async (req, res) => {
@@ -131,99 +98,9 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// Generate contract
-app.post('/api/generate-contract', rateLimitMiddleware, authenticateToken, async (req, res) => {
-  try {
-    const { contractType, requirements, clientName, otherPartyName, jurisdiction } = req.body;
 
-    if (!contractType || !requirements || !clientName || !otherPartyName || !jurisdiction) {
-      return res.status(400).json({ error: 'All fields are required' });
-    }
-
-    const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.userId]);
-    const user = userResult.rows[0];
-
-    if (user.subscription_tier === 'basic' && user.contracts_used_this_month >= 25) {
-      return res.status(403).json({ error: 'Monthly contract limit reached. Please upgrade your subscription.' });
-    }
-
-    const prompt = compilePrompt({
-      templatePath: path.join(__dirname, '../prompt-engine/templates/base_employment_agreement.md'),
-      clauseDir: path.join(__dirname, '../prompt-engine/clauses'),
-      clauseKeys: [
-        'employee_details',
-        'job_title_and_duties',
-        'at_will_employment',
-        'employee_classification',
-        'compensation'
-      ],
-      variables: {
-        employee_name: clientName,
-        company_name: otherPartyName,
-        jurisdiction,
-        amount: req.body.amount || '95000',
-        hour_year: req.body.hour_year || 'year',
-        job_title: req.body.job_title || 'Engineer',
-        work_location: req.body.work_location || 'Remote',
-        supervisor_title: req.body.supervisor_title || 'Manager'
-      }
-    });
-
-    console.log("🧪 Prompt Output:\n", prompt);
-
-    const completion = await axios.post(
-      'https://api.groq.com/openai/v1/chat/completions',
-      {
-        model: "llama3-70b-8192",
-        messages: [
-          {
-            role: "system",
-            content: "You are a legal document assistant that generates professional contracts. Always include proper legal disclaimers and formatting."
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        max_tokens: 2000,
-        temperature: 0.3,
-      },
-      {
-        headers: {
-          'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
-          'Content-Type': 'application/json'
-        }
-      }
-    );
-
-    const generatedContract = completion.data.choices[0].message.content;
-
-    await pool.query(
-      'UPDATE users SET contracts_used_this_month = contracts_used_this_month + 1 WHERE id = $1',
-      [req.user.userId]
-    );
-
-    res.json({
-      contract: generatedContract,
-      contractType,
-      clientName,
-      otherPartyName,
-      jurisdiction
-    });
-  } catch (error) {
-    console.error('Contract generation error:', error.message);
-    if (error.response) {
-      console.error('Groq error status:', error.response.status);
-      console.error('Groq error data:', error.response.data);
-    }
-
-    if (error.code === 'insufficient_quota') {
-      res.status(503).json({ error: 'AI service temporarily unavailable. Please try again later.' });
-    } else {
-      res.status(500).json({ error: 'Failed to generate contract' });
-    }
-  }
-});
+// --- Existing Contract Management Routes ---
+// These routes for getting and viewing saved contracts remain the same.
 
 // Get user contracts
 app.get('/api/user-contracts', authenticateToken, async (req, res) => {
@@ -257,12 +134,15 @@ app.get('/api/contracts/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// Health check
+
+// --- Server Health Check & Final Setup ---
+
+// Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
-// Error handler
+// Generic error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
@@ -270,7 +150,7 @@ app.use((err, req, res, next) => {
 
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
-  console.debug(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
 
 module.exports = app;
