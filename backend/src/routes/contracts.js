@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { composeContract } = require('../engine/composer.js');
 
-// Import the middleware functions. The .js extension makes the path explicit.
+// Import the middleware functions
 const { authenticateToken } = require('../middleware/authenticateToken.js');
 const { rateLimitMiddleware } = require('../middleware/rateLimit.js');
 
@@ -17,6 +17,7 @@ router.post('/generate-contract', rateLimitMiddleware, authenticateToken, async 
     }
 
     try {
+        console.log("✅ Incoming request body:", JSON.stringify(req.body, null, 2));
         const userInput = req.body;
         const contractContent = await composeContract(userInput);
 
@@ -34,6 +35,5 @@ router.post('/generate-contract', rateLimitMiddleware, authenticateToken, async 
     }
 });
 
-
-// This is the critical line that exports the router for server.js to use.
+// Export the router for use in server.js
 module.exports = router;

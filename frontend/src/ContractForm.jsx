@@ -1,12 +1,13 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Textarea } from './ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Alert, AlertDescription } from './ui/alert';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { FileText, Loader2 } from 'lucide-react';
 
 const ContractForm = () => {
@@ -51,8 +52,7 @@ const ContractForm = () => {
     setError('');
     setLoading(true);
 
-    // Validate form
-    if (!formData.contractType || !formData.requirements || !formData.clientName || 
+    if (!formData.contractType || !formData.requirements || !formData.clientName ||
         !formData.otherPartyName || !formData.jurisdiction) {
       setError('Please fill in all fields');
       setLoading(false);
@@ -67,21 +67,30 @@ const ContractForm = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          contractType: formData.contractType,
+          jurisdiction: formData.jurisdiction,
+          parameters: {
+            clientName: formData.clientName,
+            otherPartyName: formData.otherPartyName
+          },
+          options: {
+            requirements: formData.requirements
+          }
+        }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Navigate to results page with contract data
-        navigate('/contract-result', { 
-          state: { 
+        navigate('/contract-result', {
+          state: {
             contract: data.contract,
             contractType: data.contractType,
             clientName: data.clientName,
             otherPartyName: data.otherPartyName,
             jurisdiction: data.jurisdiction
-          } 
+          }
         });
       } else {
         setError(data.error || 'Failed to generate contract');
@@ -122,8 +131,8 @@ const ContractForm = () => {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <Label htmlFor="contractType">Contract Type *</Label>
-                  <Select 
-                    value={formData.contractType} 
+                  <Select
+                    value={formData.contractType}
                     onValueChange={(value) => handleInputChange('contractType', value)}
                   >
                     <SelectTrigger className="mt-1">
@@ -141,8 +150,8 @@ const ContractForm = () => {
 
                 <div>
                   <Label htmlFor="jurisdiction">State/Jurisdiction *</Label>
-                  <Select 
-                    value={formData.jurisdiction} 
+                  <Select
+                    value={formData.jurisdiction}
                     onValueChange={(value) => handleInputChange('jurisdiction', value)}
                   >
                     <SelectTrigger className="mt-1">
@@ -191,7 +200,7 @@ const ContractForm = () => {
                   id="requirements"
                   value={formData.requirements}
                   onChange={(e) => handleInputChange('requirements', e.target.value)}
-                  placeholder="Describe your contract needs in plain English... For example: 'I need an employment contract for a software developer position with a 90-day probation period, $80,000 annual salary, standard benefits, and a 2-week notice period for termination.'"
+                  placeholder="Describe your contract needs..."
                   className="mt-1 min-h-[120px]"
                   rows={6}
                 />
@@ -203,21 +212,21 @@ const ContractForm = () => {
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <h3 className="font-semibold text-blue-900 mb-2">Important Notice</h3>
                 <p className="text-sm text-blue-800">
-                  All generated contracts include a legal disclaimer and should be reviewed by a qualified attorney before use. 
+                  All generated contracts include a legal disclaimer and should be reviewed by a qualified attorney before use.
                   This service does not constitute legal advice.
                 </p>
               </div>
 
               <div className="flex justify-end space-x-4">
-                <Button 
-                  type="button" 
-                  variant="outline" 
+                <Button
+                  type="button"
+                  variant="outline"
                   onClick={() => navigate('/dashboard')}
                 >
                   Cancel
                 </Button>
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   disabled={loading}
                   className="min-w-[140px]"
                 >
@@ -240,4 +249,3 @@ const ContractForm = () => {
 };
 
 export default ContractForm;
-
