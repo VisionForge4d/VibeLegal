@@ -2,19 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
-// Components
-import Navbar from "./Navbar";
-import LandingPage from "./LandingPage";
-import Login from "./Login";
-import Register from "./Register";
-import ContractForm from "./ContractForm";
-import ContractResult from "./ContractResult";
-import Dashboard from "./Dashboard";
-import Pricing from "./Pricing";
-import DemoNotice from "./DemoNotice";
-import AuthContext from './contexts/AuthContext';
+// CORRECTED: Imports from the organized folders
+import Navbar from './components/Navbar';
+import LandingPage from './pages/LandingPage';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import Pricing from './pages/Pricing';
+import ContractForm from './pages/ContractForm';
+import ContractResult from './pages/ContractResult'; // Added import
+import DemoNotice from './components/DemoNotice';
 
-// Context for authentication
+// The AuthContext is created and exported here, making this the single source of truth.
+export const AuthContext = React.createContext();
 
 function App() {
   const [user, setUser] = useState(null);
@@ -23,10 +23,7 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
-
-    if (token && userData) {
-      setUser(JSON.parse(userData));
-    }
+    if (token && userData) { setUser(JSON.parse(userData)); }
     setLoading(false);
   }, []);
 
@@ -42,36 +39,25 @@ function App() {
     setUser(null);
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
+  if (loading) { return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div></div>; }
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
       <Router>
         <div className="min-h-screen bg-gray-50">
-          {import.meta.env.MODE === 'development' && <DemoNotice />}
+          <DemoNotice />
           <Navbar />
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
             <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route
-              path="/dashboard"
-              element={user ? <Dashboard /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/create-contract"
-              element={user ? <ContractForm /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/contract-result"
-              element={user ? <ContractResult /> : <Navigate to="/login" />}
+            <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />} />
+            <Route path="/create-contract" element={user ? <ContractForm /> : <Navigate to="/login" />} />
+            {/* Added Route for the result page */}
+            <Route 
+              path="/contract-result" 
+              element={user ? <ContractResult /> : <Navigate to="/login" />} 
             />
           </Routes>
         </div>
@@ -79,5 +65,4 @@ function App() {
     </AuthContext.Provider>
   );
 }
-
 export default App;

@@ -1,39 +1,31 @@
 const express = require('express');
 const router = express.Router();
 const { composeContract } = require('../engine/composer.js');
-
-// Import the middleware functions
 const { authenticateToken } = require('../middleware/authenticateToken.js');
 const { rateLimitMiddleware } = require('../middleware/rateLimit.js');
 
-/**
- * POST /api/generate-contract
- * This route is protected by both rate limiting and authentication.
- */
-router.post('/generate-contract', rateLimitMiddleware, authenticateToken, async (req, res) => {
-    // Basic validation to ensure the request body exists and has the correct structure.
-    if (!req.body || !req.body.parameters || !req.body.options) {
-        return res.status(400).json({ error: 'Invalid request payload. Missing parameters or options.' });
-    }
-
-    try {
-        console.log("✅ Incoming request body:", JSON.stringify(req.body, null, 2));
-        const userInput = req.body;
-        const contractContent = await composeContract(userInput);
-
-        res.status(200).json({
-            contract: contractContent,
-            contractType: userInput.contractType,
-            clientName: userInput.parameters.clientName,
-            otherPartyName: userInput.parameters.otherPartyName,
-            jurisdiction: userInput.jurisdiction
-        });
-
-    } catch (error) {
-        console.error('Contract generation failed:', error);
-        res.status(500).json({ error: 'An unexpected error occurred while generating the contract.' });
-    }
-});
-
-// Export the router for use in server.js
-module.exports = router;
+module.exports = (pool) => {
+    router.post('/generate-contract', rateLimitMiddleware, authenticateToken, async (req, res) => {
+        if (!req.body || !req.body.parameters || !req.body.options || !req.body.parameters.title) {
+            return res.status(400).json({ error: 'Invalid request payload. Missing title, parameters, or options.' });
+        }
+        try {
+            const userInput = req.body;
+            const userId = req.user.userId;
+            const contractContent = await composeContract(userInput);
+            const newContract = await pool.query(
+                'INSERT INTO contracts (user_id, title, contract_type, content) VALUES ($1, $2, $3, $4) RETURNING *',
+                [userId, userInput.parameters.title, userInput.contractType, contractContent]
+            );
+            res.status(200).json({
+                message: "Contract generated and saved successfully.",
+                contract: contractContent,
+                savedContract: newContract.rows[0]
+            });
+        } catch (error) {
+            console.error('Contract generation or saving failed:', error);
+            res.status(500).json({ error: 'An unexpected error occurred while processing the contract.' });
+        }
+    });
+    return router;
+};
