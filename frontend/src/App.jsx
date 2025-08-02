@@ -10,7 +10,11 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Pricing from './pages/Pricing';
 import ContractForm from './pages/ContractForm';
-import ContractResult from './pages/ContractResult'; // Added import
+import ContractResult from './pages/ContractResult';
+// --- CHANGE START ---
+// 1. Import the new ContractView page
+import ContractView from './pages/ContractView';
+// --- CHANGE END ---
 import DemoNotice from './components/DemoNotice';
 
 // The AuthContext is created and exported here, making this the single source of truth.
@@ -54,11 +58,17 @@ function App() {
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />} />
             <Route path="/create-contract" element={user ? <ContractForm /> : <Navigate to="/login" />} />
-            {/* Added Route for the result page */}
             <Route 
               path="/contract-result" 
               element={user ? <ContractResult /> : <Navigate to="/login" />} 
             />
+            {/* --- CHANGE START --- */}
+            {/* 2. Register the new route for viewing a single contract */}
+            <Route 
+              path="/contracts/:id" 
+              element={user ? <ContractView /> : <Navigate to="/login" />} 
+            />
+            {/* --- CHANGE END --- */}
           </Routes>
         </div>
       </Router>
