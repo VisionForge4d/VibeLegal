@@ -32,7 +32,8 @@ app.use(express.json());
 // --- API Routes ---
 // This line mounts our contract router. The error was caused by it
 // not being imported correctly.
-app.use('/api', contractRoutes);
+// Pass the database pool to the router so it can perform queries.
+app.use('/api', contractRoutes(pool));
 
 
 // --- Existing User Authentication Routes ---
@@ -128,11 +129,47 @@ app.get('/api/contracts/:id', authenticateToken, async (req, res) => {
       return res.status(404).json({ error: 'Contract not found' });
     }
     res.json({ contract: result.rows[0] });
-  } catch (error) {
+  } catch (error)
+{
     console.error('Get contract error:', error);
     res.status(500).json({ error: 'Failed to retrieve contract' });
   }
 });
+
+// --- NEW ROUTE START ---
+// Save a newly generated contract
+app.post('/api/save-contract', authenticateToken, async (req, res) => {
+  try {
+    // --- BUG FIX: Changed to accept 'contractType' from the frontend ---
+    const { title, contractType, content } = req.body;
+    const { userId } = req.user;
+
+    // --- Basic Validation ---
+    // --- BUG FIX: Validating the new 'contractType' variable ---
+    if (!title || !contractType || !content) {
+      return res.status(400).json({ error: 'Missing required contract data: title, contract_type, and content are required.' });
+    }
+
+    // --- Database Insertion ---
+    const result = await pool.query(
+      'INSERT INTO contracts (user_id, title, contract_type, content) VALUES ($1, $2, $3, $4) RETURNING id, title, created_at',
+      // --- BUG FIX: Passing the correct 'contractType' variable to the query ---
+      [userId, title, contractType, content]
+    );
+
+    const newContract = result.rows[0];
+
+    res.status(201).json({
+      message: 'Contract saved successfully!',
+      contract: newContract
+    });
+
+  } catch (error) {
+    console.error('Save contract error:', error);
+    res.status(500).json({ error: 'Failed to save the contract due to a server error.' });
+  }
+});
+// --- NEW ROUTE END ---
 
 
 // --- Server Health Check & Final Setup ---

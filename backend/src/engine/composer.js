@@ -63,7 +63,7 @@ function buildContractBody(scaffold, clauses, userInput) {
 
         // If the clause and variation exist, and the clause text is not empty...
         if (variation && variation.clause) {
-            // Populate placeholders in the clause text.
+            // Populate placeholders in the clause text. Note: we pass the whole userInput.parameters object.
             const populatedClauseText = populatePlaceholders(variation.clause, userInput.parameters);
             
             // Format the clause with a title and section number.
@@ -76,19 +76,12 @@ function buildContractBody(scaffold, clauses, userInput) {
 }
 
 
-/**
- * Replaces placeholders like {{placeholder_name}} with actual data.
- * @param {string} text - The clause text with placeholders.
- * @param {object} parameters - The user-provided data.
- * @returns {string} The text with placeholders filled in.
- */
 function populatePlaceholders(text, parameters) {
-    // A regex to find all occurrences of {{...}}
-    return text.replace(/\{\{(\w+)\}\}/g, (match, placeholderName) => {
-        // If a value for the placeholder exists in parameters, use it. Otherwise, keep the placeholder.
-        return parameters[placeholderName] !== undefined ? parameters[placeholderName] : match;
+    return text.replace(/\$?\{\{(\w+)\}\}/g, (match, placeholderName) => {
+        return parameters[placeholderName] !== undefined ? parameters[placeholderName] : `[!!MISSING_DATA: ${placeholderName}!!]`;
     });
 }
+
 
 /**
  * Assembles the final, complete contract document.
