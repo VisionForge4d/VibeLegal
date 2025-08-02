@@ -18,10 +18,11 @@ const Dashboard = () => {
 
   const fetchContracts = async () => {
     try {
-      let raw = localStorage.getItem('token');
+      const raw = localStorage.getItem('token');
       const token = raw?.startsWith('Bearer ') ? raw.slice(7) : raw;
 
-      const response = await fetch('http://localhost:5000/api/user-contracts', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/user-contracts`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -85,8 +86,12 @@ const Dashboard = () => {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">{stat.title}</p>
-                    <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+                    <p className="text-sm font-medium text-gray-600">
+                      {stat.title}
+                    </p>
+                    <p className="text-3xl font-bold text-gray-900">
+                      {stat.value}
+                    </p>
                   </div>
                   <div className="bg-gray-50 p-3 rounded-lg">{stat.icon}</div>
                 </div>
@@ -100,7 +105,9 @@ const Dashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle>Recent Contracts</CardTitle>
-                <CardDescription>Your recently created contracts</CardDescription>
+                <CardDescription>
+                  Your recently created contracts. Click one to view.
+                </CardDescription>
               </div>
               <Link to="/create-contract">
                 <Button variant="outline" size="sm">
@@ -110,7 +117,6 @@ const Dashboard = () => {
               </Link>
             </div>
           </CardHeader>
-
           <CardContent>
             {loading ? (
               <div className="text-center py-8">Loading...</div>
@@ -120,25 +126,32 @@ const Dashboard = () => {
               <div className="text-center py-8">
                 <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-medium">No contracts yet</h3>
-                <p className="text-gray-600">Create your first contract to get started.</p>
+                <p className="text-gray-600">
+                  Create your first contract to get started.
+                </p>
               </div>
             ) : (
               <div className="space-y-4">
                 {contracts.map((contract) => (
-                  <div
+                  <Link
+                    to={`/contracts/${contract.id}`}
                     key={contract.id}
-                    className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50"
+                    className="block"
                   >
-                    <div className="flex items-center space-x-4">
-                      <div>
-                        <h3 className="font-medium">{contract.title}</h3>
-                        <p className="text-sm text-gray-500">
-                          Created {formatDate(contract.created_at)}
-                        </p>
+                    <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                      <div className="flex items-center space-x-4">
+                        <div>
+                          <h3 className="font-medium">{contract.title}</h3>
+                          <p className="text-sm text-gray-500">
+                            Created {formatDate(contract.created_at)}
+                          </p>
+                        </div>
                       </div>
+                      <Badge variant="secondary">
+                        {contract.contract_type}
+                      </Badge>
                     </div>
-                    <Badge variant="secondary">{contract.contract_type}</Badge>
-                  </div>
+                  </Link>
                 ))}
               </div>
             )}
