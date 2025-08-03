@@ -1,15 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { AuthContext } from '../App';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { ArrowLeft, Plus, Loader2, AlertTriangle } from 'lucide-react';
+import api from '../api/api';
 
 const ContractView = () => {
-  const { id } = useParams(); // This hook reads the contract ID from the URL
+  const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
-
   const [contract, setContract] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -17,31 +15,17 @@ const ContractView = () => {
   useEffect(() => {
     const fetchContract = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-        const response = await fetch(`${apiUrl}/api/contracts/${id}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (response.status === 404) {
-          setError('Contract not found or you do not have permission to view it.');
-        } else if (!response.ok) {
-          const data = await response.json();
-          setError(data.error || 'An unexpected error occurred.');
-        } else {
-          const data = await response.json();
-          setContract(data.contract);
-        }
+        const data = await api.get(`/contracts/${id}`);
+        setContract(data.contract);
       } catch (err) {
-        console.error('Fetch contract error:', err);
-        setError('A network error occurred. Please try again.');
+        // Auth errors are handled by the api utility, so this only catches other errors.
+        setError(err.message || 'An unexpected error occurred.');
       } finally {
         setLoading(false);
       }
     };
-
     fetchContract();
-  }, [id]); // This effect runs whenever the contract ID in the URL changes
+  }, [id]);
 
   if (loading) {
     return (
@@ -90,7 +74,6 @@ const ContractView = () => {
             </Button>
           </Link>
         </div>
-
         <Card>
           <CardHeader>
             <CardTitle>{contract?.title}</CardTitle>
