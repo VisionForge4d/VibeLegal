@@ -7,6 +7,7 @@ import { Label } from '../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Alert, AlertDescription } from '../components/ui/alert';
 import { Loader2, Sparkles } from 'lucide-react';
+import api from '../api/api'; // Ensure we use the correct api utility
 
 const contractConfig = {
     'California Employment Agreement': {
@@ -37,9 +38,17 @@ const ContractForm = () => {
     useEffect(() => {
         const newConfig = contractConfig[contractType];
         setCurrentConfig(newConfig);
+        
+        // Reset parameters, but keep general info
         setParameters(prev => ({ clientName: prev.clientName, otherPartyName: prev.otherPartyName, title: prev.title }));
+        
+        // Set default options when config changes
         const defaultOptions = {};
-        if (newConfig) { newConfig.options.forEach(opt => { defaultOptions[opt.key] = opt.variations[0].value; }); }
+        if (newConfig) { 
+          newConfig.options.forEach(opt => { 
+            defaultOptions[opt.key] = opt.variations[0].value; 
+          }); 
+        }
         setOptions(defaultOptions);
     }, [contractType]);
 
@@ -50,31 +59,30 @@ const ContractForm = () => {
         e.preventDefault();
         setError('');
         if (!contractType || !parameters.clientName || !parameters.otherPartyName || !parameters.title) {
-            setError('Please fill in all general information fields, including the contract title.');
+            setError('Please fill in all general information fields and select a contract type.');
             return;
         }
         setLoading(true);
-        const payload = { contractType, jurisdiction: currentConfig.jurisdiction, parameters, options };
-        console.log("✅ Submitting Payload to Backend:", JSON.stringify(payload, null, 2));
+        const payload = { 
+            contractType, 
+            jurisdiction: currentConfig.jurisdiction, 
+            parameters: { ...parameters, title: parameters.title }, // Ensure title is in parameters
+            options 
+        };
+        
         try {
-            const token = localStorage.getItem('token');
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-            const response = await fetch(`${apiUrl}/api/generate-contract`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify(payload),
-            });
-            const data = await response.json();
-            if (response.ok) {
-                // Navigate to the result page and pass the new contract data
-                navigate('/contract-result', { state: { contract: data.contract } });
+            const data = await api.post('/generate-contract', payload);
+            if (data.contract && data.savedContract) {
+                // Pass the full savedContract object to the result page
+                navigate('/contract-result', { state: { contract: data.savedContract } });
             } else { 
                 setError(data.error || 'Failed to generate contract.'); 
             }
         } catch (err) {
-            console.error('Network or client-side error:', err);
-            setError('A network error occurred. Is the backend server running?');
-        } finally { setLoading(false); }
+            setError(err.message || 'A network error occurred. Is the backend server running?');
+        } finally { 
+            setLoading(false); 
+        }
     };
 
     return (
@@ -89,10 +97,12 @@ const ContractForm = () => {
                             <div className="space-y-4 p-4 border rounded-lg">
                                 <h3 className="text-lg font-semibold">General Information</h3>
                                 <div><Label htmlFor="title">Contract Title *</Label><Input id="title" value={parameters.title} onChange={(e) => handleParameterChange('title', e.target.value)} placeholder="e.g., Employment Agreement for John Doe" className="mt-1" /></div>
-                                <div className="grid md-grid-cols-2 gap-6">
+                                {/* --- FIX START: Corrected Tailwind grid class --- */}
+                                <div className="grid md:grid-cols-2 gap-6">
                                     <div><Label htmlFor="clientName">Your Name/Company (Employer) *</Label><Input id="clientName" value={parameters.clientName} onChange={(e) => handleParameterChange('clientName', e.target.value)} placeholder="e.g., Acme Inc." className="mt-1" /></div>
                                     <div><Label htmlFor="otherPartyName">Other Party Name (Employee) *</Label><Input id="otherPartyName" value={parameters.otherPartyName} onChange={(e) => handleParameterChange('otherPartyName', e.target.value)} placeholder="e.g., Jane Doe" className="mt-1" /></div>
                                 </div>
+                                {/* --- FIX END --- */}
                             </div>
                             <div className="space-y-4 p-4 border rounded-lg">
                                 <h3 className="text-lg font-semibold">Contract Type</h3>
@@ -102,11 +112,19 @@ const ContractForm = () => {
                                 <>
                                     <div className="space-y-4 p-4 border rounded-lg">
                                         <h3 className="text-lg font-semibold">Key Parameters</h3>
-                                        <div className="grid md-grid-cols-2 gap-6">{currentConfig.required_parameters.map(param => (<div key={param.key}><Label htmlFor={param.key}>{param.label} *</Label>{param.type === 'select' ? (<Select value={parameters[param.key] || ''} onValueChange={(value) => handleParameterChange(param.key, value)}><SelectTrigger className="mt-1"><SelectValue placeholder={`Select ${param.label}`} /></SelectTrigger><SelectContent>{param.options.map(opt => <SelectItem key={opt} value={opt}>{opt}</SelectItem>)}</SelectContent></Select>) : (<Input id={param.key} type={param.type} value={parameters[param.key] || ''} onChange={(e) => handleParameterChange(param.key, e.target.value)} placeholder={`Enter ${param.label}`} className="mt-1" />)}</div>))}</div>
+                                        {/* --- FIX START: Corrected Tailwind grid class --- */}
+                                        <div className="grid md:grid-cols-2 gap-6">
+                                            {currentConfig.required_parameters.map(param => (<div key={param.key}><Label htmlFor={param.key}>{param.label} *</Label>{param.type === 'select' ? (<Select value={parameters[param.key] || ''} onValueChange={(value) => handleParameterChange(param.key, value)}><SelectTrigger className="mt-1"><SelectValue placeholder={`Select ${param.label}`} /></SelectTrigger><SelectContent>{param.options.map(opt => <SelectItem key={opt} value={opt}>{opt}</SelectItem>)}</SelectContent></Select>) : (<Input id={param.key} type={param.type} value={parameters[param.key] || ''} onChange={(e) => handleParameterChange(param.key, e.target.value)} placeholder={`Enter ${param.label}`} className="mt-1" />)}</div>))}
+                                        </div>
+                                        {/* --- FIX END --- */}
                                     </div>
                                     <div className="space-y-4 p-4 border rounded-lg">
                                         <h3 className="text-lg font-semibold">Clause Options</h3>
-                                        <div className="grid md-grid-cols-2 gap-6">{currentConfig.options.map(opt => (<div key={opt.key}><Label htmlFor={opt.key}>{opt.label}</Label><Select value={options[opt.key] || ''} onValueChange={(value) => handleOptionChange(opt.key, value)}><SelectTrigger className="mt-1"><SelectValue placeholder={`Select ${opt.label}`} /></SelectTrigger><SelectContent>{opt.variations.map(variation => <SelectItem key={variation.value} value={variation.value}>{variation.label}</SelectItem>)}</SelectContent></Select></div>))}</div>
+                                        {/* --- FIX START: Corrected Tailwind grid class --- */}
+                                        <div className="grid md:grid-cols-2 gap-6">
+                                            {currentConfig.options.map(opt => (<div key={opt.key}><Label htmlFor={opt.key}>{opt.label}</Label><Select value={options[opt.key] || ''} onValueChange={(value) => handleOptionChange(opt.key, value)}><SelectTrigger className="mt-1"><SelectValue placeholder={`Select ${opt.label}`} /></SelectTrigger><SelectContent>{opt.variations.map(variation => <SelectItem key={variation.value} value={variation.value}>{variation.label}</SelectItem>)}</SelectContent></Select></div>))}
+                                        </div>
+                                        {/* --- FIX END --- */}
                                     </div>
                                 </>
                             )}
