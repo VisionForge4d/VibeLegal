@@ -1,0 +1,15 @@
+# VibeLegal Archive
+
+This repository preserves working files and components that were removed from the main [`VibeLegal`](https://github.com/VisionForge4d/VibeLegal) project.
+
+## 📦 Contents
+
+- `frontend/src/` – Original UI components
+- `frontend/src/pages/` – Page-level React components
+- `_notes/` – Provenance, SHA records, and rescue logs
+
+## 🧭 Purpose
+
+This archive acts as a code museum — it lets us track past designs, recover old logic, and avoid accidental loss of working patterns.
+
+No ongoing development happens here.
