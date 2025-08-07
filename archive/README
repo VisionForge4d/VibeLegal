@@ -1,0 +1,20 @@
+# 🗂 archive/
+
+This folder preserves **previously deleted or replaced code** for historical, reference, and rollback purposes.
+
+## Purpose
+
+- Keep a permanent reference to legacy logic
+- Retain modules or UI that might return in future forks
+- Protect against accidental deletion of useful patterns
+
+## Structure
+
+- `components/` – Old UI components removed from production
+- `frontend/` – Original frontend source structure
+- `deleted-rescue/` – Files manually rescued from recent deletions (2025-08-07)
+
+---
+
+🚫 **Do not delete this folder without discussion.**  
+Even deprecated code holds valuable logic, structure, or decision history.
