@@ -1,3 +1,53 @@
+
+# 🛑 VibeLegal — Paused (Internal Archive)
+
+> "Not scrapped. Just shelved with intention."
+
+---
+
+## ❗ Project Status: On Hold
+
+This repo is paused as of **2025-08-07**.
+
+The project was compromised by an unauthorized mass deletion (~300,000 LOC), including critical legacy code and archived assets. No PR, no comment, no heads-up. That breach violated the core principles of trust and version integrity.
+
+---
+
+## 🔐 Notes for Future Me (or trusted collaborators):
+
+- Repo name changed from `vibelegal` → `vibelegal-paused` to reflect archival state.
+- **All original commits are intact** — revert/recovery still fully possible.
+- All sensitive or valuable logic should be assumed at-risk and reviewed before reuse.
+- Any future resurrection must use **protected branches + mandatory PRs only**.
+
+---
+
+## 💭 Why Keep It?
+
+Despite the damage:
+- There's logic worth mining here
+- There are lessons worth not repeating
+- There's code that might feed future projects
+
+This repo is here as a **fossil** — not a foundation.
+
+---
+
+## ✅ Actionables (if/when resuming):
+
+1. Fork this into `vibelegal-reboot`
+2. Audit all contributor permissions — zero write access at start
+3. Restore valuable logic from before `[bad-commit-hash]`
+4. Establish `CONTRIBUTING.md` + `archive/` branch protections
+
+---
+
+## ✍️ Final Thought
+
+This was a real project. It deserved better care.  
+But the next version will have the discipline this one lacked.  
+That’s how we level up.
+
 # VibeLegal - AI-Powered Contract Drafting for Lawyers
 
 VibeLegal is a minimal viable product (MVP) that demonstrates an AI-powered contract drafting web application specifically designed for legal professionals. The application combines modern web technologies with OpenAI's GPT models to generate professional, legally compliant contracts quickly and efficiently.
