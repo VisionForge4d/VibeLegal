@@ -10,8 +10,12 @@ const { composeContract } = require('./engine/composer.js');
 dotenv.config();
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+  user: 'zod',
+  host: 'localhost',
+  database: 'vibelegal',
+  port: 5432,
+  password: 'saddleup123',
+  ssl: false
 });
 
 async function testDbConnection() {

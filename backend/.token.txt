@@ -1,0 +1,1 @@
+Bearer <copied_token>
