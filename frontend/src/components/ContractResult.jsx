@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Textarea } from './ui/textarea';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Alert, AlertDescription } from './ui/alert';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   FileText, 
   Download, 
@@ -13,8 +14,11 @@ import {
   Edit3, 
   Eye, 
   CheckCircle,
-  ArrowLeft
+  ArrowLeft,
+  RefreshCw,
+  Wand2
 } from 'lucide-react';
+import config from '../config.js';
 
 const ContractResult = () => {
   const location = useLocation();
@@ -23,8 +27,10 @@ const ContractResult = () => {
   const [contractTitle, setContractTitle] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [regenerating, setRegenerating] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState('');
+  const [contractSections, setContractSections] = useState([]);
 
   useEffect(() => {
     if (!location.state || !location.state.contract) {
@@ -35,7 +41,102 @@ const ContractResult = () => {
     const { contract, contractType, clientName, otherPartyName } = location.state;
     setContractContent(contract);
     setContractTitle(`${contractType} - ${clientName} & ${otherPartyName}`);
+    
+    // Parse contract into sections for easier editing
+    parseContractSections(contract);
   }, [location.state, navigate]);
+
+  const parseContractSections = (contract) => {
+    // Simple section parsing based on numbered headings or clear section breaks
+    const sections = [];
+    const lines = contract.split('\n');
+    let currentSection = { title: 'Preamble', content: '' };
+    
+    lines.forEach((line, index) => {
+      // Look for section headers (numbered sections, all caps, etc.)
+      if (line.match(/^\d+\.\s+[A-Z\s]+/) || line.match(/^[A-Z\s]{3,}:?\s*$/) || line.match(/^Article\s+\d+/i)) {
+        if (currentSection.content.trim()) {
+          sections.push({ ...currentSection });
+        }
+        currentSection = { 
+          title: line.trim() || `Section ${sections.length + 1}`, 
+          content: '' 
+        };
+      } else {
+        currentSection.content += line + '\n';
+      }
+    });
+    
+    if (currentSection.content.trim()) {
+      sections.push(currentSection);
+    }
+    
+    setContractSections(sections);
+  };
+
+  const handleRegenerateSection = async (sectionIndex) => {
+    setRegenerating(true);
+    setError('');
+
+    try {
+      const token = localStorage.getItem('token');
+      const section = contractSections[sectionIndex];
+      
+      // Create a prompt to regenerate just this section
+      const regeneratePrompt = `Please regenerate the following section of a ${location.state.contractType} for ${location.state.jurisdiction}:
+
+Section: ${section.title}
+Current content: ${section.content}
+
+Requirements: ${location.state.requirements || 'Standard legal requirements'}
+
+Please provide an improved version of this section only, maintaining legal accuracy and professional formatting.`;
+
+      const response = await fetch(`${config.API_BASE_URL}/generate-contract`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          contractType: location.state.contractType,
+          requirements: regeneratePrompt,
+          clientName: location.state.clientName,
+          otherPartyName: location.state.otherPartyName,
+          jurisdiction: location.state.jurisdiction
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Update the specific section
+        const updatedSections = [...contractSections];
+        updatedSections[sectionIndex].content = data.contract;
+        setContractSections(updatedSections);
+        
+        // Rebuild the full contract
+        const newContract = updatedSections.map(s => s.title + '\n' + s.content).join('\n\n');
+        setContractContent(newContract);
+      } else {
+        setError(data.error || 'Failed to regenerate section');
+      }
+    } catch (err) {
+      setError('Network error. Please try again.');
+    } finally {
+      setRegenerating(false);
+    }
+  };
+
+  const handleSectionEdit = (sectionIndex, newContent) => {
+    const updatedSections = [...contractSections];
+    updatedSections[sectionIndex].content = newContent;
+    setContractSections(updatedSections);
+    
+    // Rebuild the full contract
+    const newContract = updatedSections.map(s => s.title + '\n' + s.content).join('\n\n');
+    setContractContent(newContract);
+  };
 
   const handleSave = async () => {
     if (!contractTitle.trim()) {
@@ -48,7 +149,7 @@ const ContractResult = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/save-contract', {
+      const response = await fetch(`${config.API_BASE_URL}/save-contract`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -155,43 +256,98 @@ const ContractResult = () => {
                   <div>
                     <CardTitle>Contract Content</CardTitle>
                     <CardDescription>
-                      {isEditing ? 'Edit your contract below' : 'Review your generated contract'}
+                      Review and edit your generated contract
                     </CardDescription>
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setIsEditing(!isEditing)}
-                  >
-                    {isEditing ? (
-                      <>
-                        <Eye className="mr-2 h-4 w-4" />
-                        Preview
-                      </>
-                    ) : (
-                      <>
-                        <Edit3 className="mr-2 h-4 w-4" />
-                        Edit
-                      </>
-                    )}
-                  </Button>
                 </div>
               </CardHeader>
               <CardContent>
-                {isEditing ? (
-                  <Textarea
-                    value={contractContent}
-                    onChange={(e) => setContractContent(e.target.value)}
-                    className="min-h-[600px] font-mono text-sm"
-                    placeholder="Contract content..."
-                  />
-                ) : (
-                  <div className="bg-white border rounded-lg p-6 min-h-[600px]">
-                    <pre className="whitespace-pre-wrap text-sm leading-relaxed">
-                      {contractContent}
-                    </pre>
-                  </div>
-                )}
+                <Tabs defaultValue="full" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="full">Full Contract</TabsTrigger>
+                    <TabsTrigger value="sections">Edit by Section</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="full" className="mt-4">
+                    <div className="flex items-center justify-between mb-4">
+                      <p className="text-sm text-gray-600">
+                        {isEditing ? 'Edit the full contract below' : 'Review your complete contract'}
+                      </p>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setIsEditing(!isEditing)}
+                      >
+                        {isEditing ? (
+                          <>
+                            <Eye className="mr-2 h-4 w-4" />
+                            Preview
+                          </>
+                        ) : (
+                          <>
+                            <Edit3 className="mr-2 h-4 w-4" />
+                            Edit
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                    
+                    {isEditing ? (
+                      <Textarea
+                        value={contractContent}
+                        onChange={(e) => setContractContent(e.target.value)}
+                        className="min-h-[600px] font-mono text-sm"
+                        placeholder="Contract content..."
+                      />
+                    ) : (
+                      <div className="bg-white border rounded-lg p-6 min-h-[600px]">
+                        <pre className="whitespace-pre-wrap text-sm leading-relaxed">
+                          {contractContent}
+                        </pre>
+                      </div>
+                    )}
+                  </TabsContent>
+                  
+                  <TabsContent value="sections" className="mt-4">
+                    <div className="space-y-6">
+                      {contractSections.map((section, index) => (
+                        <Card key={index} className="border-l-4 border-l-blue-500">
+                          <CardHeader className="pb-3">
+                            <div className="flex items-center justify-between">
+                              <CardTitle className="text-lg">{section.title}</CardTitle>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleRegenerateSection(index)}
+                                disabled={regenerating}
+                              >
+                                {regenerating ? (
+                                  <>
+                                    <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+                                    Regenerating...
+                                  </>
+                                ) : (
+                                  <>
+                                    <Wand2 className="mr-2 h-4 w-4" />
+                                    Regenerate
+                                  </>
+                                )}
+                              </Button>
+                            </div>
+                          </CardHeader>
+                          <CardContent>
+                            <Textarea
+                              value={section.content}
+                              onChange={(e) => handleSectionEdit(index, e.target.value)}
+                              className="min-h-[150px] font-mono text-sm"
+                              placeholder="Section content..."
+                            />
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </TabsContent>
+                </Tabs>
               </CardContent>
             </Card>
           </div>

@@ -4,29 +4,41 @@ const dotenv = require('dotenv');
 const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { authenticateToken } = require('./middleware/authenticateToken.js');
+const { composeContract } = require('./engine/composer.js');
 
 dotenv.config();
 
-const { authenticateToken } = require('./src/middleware/authenticateToken.js');
-const contractRoutes = require('./src/routes/contracts.js');
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+});
+
+async function testDbConnection() {
+  try {
+    await pool.query('SELECT NOW()');
+    console.log('🐘 Database connection successful');
+  } catch (error) {
+    console.error('❌ Database connection failed:', error.stack);
+    process.exit(1);
+  }
+}
+testDbConnection();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
-
 app.use(cors());
 app.use(express.json());
 
-app.use('/api', contractRoutes(pool));
+// --- ROUTES ---
+
+app.get('/api/health', (req, res) => res.json({ status: 'OK', timestamp: new Date().toISOString() }));
 
 app.post('/api/register', async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).json({ error: 'Email and password are required' });
-
     const existingUser = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     if (existingUser.rows.length > 0) return res.status(400).json({ error: 'User already exists' });
 
@@ -38,7 +50,6 @@ app.post('/api/register', async (req, res) => {
 
     const user = result.rows[0];
     const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '24h' });
-
     res.status(201).json({
       message: 'User created successfully',
       token,
@@ -63,16 +74,10 @@ app.post('/api/login', async (req, res) => {
     if (!isValidPassword) return res.status(401).json({ error: 'Invalid credentials' });
 
     const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '24h' });
-
     res.json({
       message: 'Login successful',
       token,
-      user: {
-        id: user.id,
-        email: user.email,
-        subscription_tier: user.subscription_tier,
-        contracts_used_this_month: user.contracts_used_this_month
-      }
+      user: { id: user.id, email: user.email, subscription_tier: user.subscription_tier, contracts_used_this_month: user.contracts_used_this_month }
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -80,33 +85,31 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+app.post('/api/generate-contract', authenticateToken, async (req, res) => {
+    const userInput = req.body;
+    if (!userInput || !userInput.parameters || !userInput.contractType) {
+        return res.status(400).json({ error: 'Invalid request payload. Missing parameters or contractType.' });
+    }
+    try {
+        const contractContent = await composeContract(userInput);
+        res.status(200).json({
+            message: "Contract generated successfully.",
+            contract: contractContent,
+            savedContract: { content: contractContent, title: userInput.parameters.title || "Untitled Contract" }
+        });
+    } catch (error) {
+        console.error('Contract generation failed:', error);
+        res.status(500).json({ error: 'Failed to generate contract.' });
+    }
+});
+
 app.get('/api/user-contracts', authenticateToken, async (req, res) => {
   try {
-    const result = await pool.query(
-      'SELECT id, title, contract_type, created_at FROM contracts WHERE user_id = $1 ORDER BY created_at DESC',
-      [req.user.userId]
-    );
+    const result = await pool.query('SELECT id, title, contract_type, created_at FROM contracts WHERE user_id = $1 ORDER BY created_at DESC', [req.user.userId]);
     res.json({ contracts: result.rows });
   } catch (error) {
     console.error('Get contracts error:', error);
     res.status(500).json({ error: 'Failed to retrieve contracts' });
-  }
-});
-
-app.get('/api/contracts/:id', authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await pool.query(
-      'SELECT * FROM contracts WHERE id = $1 AND user_id = $2',
-      [id, req.user.userId]
-    );
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Contract not found' });
-    }
-    res.json({ contract: result.rows[0] });
-  } catch (error) {
-    console.error('Get contract error:', error);
-    res.status(500).json({ error: 'Failed to retrieve contract' });
   }
 });
 
@@ -115,35 +118,24 @@ app.post('/api/save-contract', authenticateToken, async (req, res) => {
     const { title, contractType, content } = req.body;
     const { userId } = req.user;
     if (!title || !contractType || !content) {
-      return res.status(400).json({ error: 'Missing required contract data: title, contract_type, and content are required.' });
+        return res.status(400).json({ error: 'Missing required contract data.' });
     }
     const result = await pool.query(
-      'INSERT INTO contracts (user_id, title, contract_type, content) VALUES ($1, $2, $3, $4) RETURNING id, title, created_at',
+      'INSERT INTO contracts (user_id, title, contract_type, content) VALUES ($1, $2, $3, $4) RETURNING *',
       [userId, title, contractType, content]
     );
-    const newContract = result.rows[0];
-    res.status(201).json({
-      message: 'Contract saved successfully!',
-      contract: newContract
-    });
+    await pool.query('UPDATE users SET contracts_used_this_month = contracts_used_this_month + 1 WHERE id = $1', [userId]);
+    res.status(201).json({ message: 'Contract saved successfully!', savedContract: result.rows[0] });
   } catch (error) {
     console.error('Save contract error:', error);
-    res.status(500).json({ error: 'Failed to save the contract due to a server error.' });
+    res.status(500).json({ error: 'Failed to save contract.' });
   }
 });
 
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() });
-});
-
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Something went wrong!' });
-});
-
+// --- Server Startup ---
 if (process.env.NODE_ENV !== 'test') {
-    app.listen(PORT, '0.0.0.0', () => {
-        console.log(`Server running on port ${PORT}`);
+    app.listen(PORT, () => {
+        console.log(`✅ Server is running on port ${PORT}`);
     });
 }
 

@@ -1,10 +1,13 @@
 {
-  "devDependencies": {
-    "dotenv-cli": "^10.0.0",
-    "jest": "^30.0.5",
-    "supertest": "^7.1.4"
-  },
+  "name": "vibelegal-monorepo",
+  "private": true,
+  "description": "Root for the VibeLegal monorepo",
   "scripts": {
-    "test": "jest --detectOpenHandles --forceExit"
+    "setup-db": "node setup-demo.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "pg": "^8.12.0"
   }
 }

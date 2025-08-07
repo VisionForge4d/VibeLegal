@@ -1,0 +1,222 @@
+{
+  "jurisdiction": "us_ca",
+  "last_updated": "2025-07-28",
+  "clauses": {
+    "employee_details": {
+      "category": "employment_terms",
+      "title": "Employee Details",
+      "clause": "This Agreement is entered into by and between [Employee Name], an individual, and [Company Name], a [State] corporation. The Employee shall report to [Supervisor Title] and perform duties at [Work Location], subject to the terms and conditions set forth herein.",
+      "legal_justification": "Establishes party identities, reporting structure, and work location to avoid ambiguity over obligations and authority.",
+      "last_updated": "2025-07-28"
+    },
+    "job_title_and_duties": {
+      "category": "employment_terms",
+      "title": "Position and Duties",
+      "clause": "Employee shall serve as [Job Title] and perform the duties customarily associated with that role, together with other duties reasonably assigned by the Company. Employee agrees to comply with lawful Company policies and procedures.",
+      "legal_justification": "Clarifies role scope and authority; reduces disputes over responsibilities without over‑specifying performance promises.",
+      "last_updated": "2025-07-28"
+    },
+    "at_will_employment": {
+      "category": "employment_terms",
+      "title": "At-Will Employment",
+      "clause": "This employment is at-will, meaning either party may terminate the employment relationship at any time, with or without cause, and with or without notice. This at-will relationship cannot be changed except by a written agreement signed by both Employee and a designated officer of the Company, specifically stating an intent to alter the at-will nature. Employee acknowledges and agrees that this is an at-will employment relationship.",
+      "legal_justification": "California Labor Code § 2922 establishes the presumption of at-will employment; clause limits modification authority to prevent claims based on informal promises.",
+      "last_updated": "2025-07-28",
+      "options": [
+        {
+          "key": "for_cause_examples",
+          "description": "Include specific, non-exclusive examples of 'for cause' termination.",
+          "clause_addition": "For illustrative purposes, 'cause' for termination may include, but is not limited to, material breach of this Agreement, failure to adhere to Company policies, gross negligence, or conviction of a felony."
+        }
+      ]
+    },
+    "employee_classification": {
+      "category": "employment_terms",
+      "title": "Employee Classification",
+      "clause": "The Employee is classified as [exempt/non-exempt] under applicable federal and California wage and hour laws. This classification affects eligibility for overtime, rest breaks, and meal periods.",
+      "legal_justification": "IWC Wage Orders and California Labor Code require accurate classification to determine wage-and-hour entitlements.",
+      "last_updated": "2025-07-28"
+    },
+    "compensation": {
+      "category": "employment_terms",
+      "title": "Compensation",
+      "clause": "Employee shall be compensated at a rate of $[amount] per [hour/year], subject to standard payroll deductions and in accordance with applicable wage laws. Overtime pay will be provided as required by California law, unless the Employee is classified as exempt.",
+      "legal_justification": "California Labor Code §§ 200–204 and wage orders govern disclosure and payment timing; clause signals compliance and avoids ambiguity.",
+      "last_updated": "2025-07-28"
+    },
+    "benefits": {
+      "category": "employment_terms",
+      "title": "Benefits",
+      "clause": "Employee will be eligible to participate in Company benefit programs, which may include health insurance, retirement plans, paid time off, and other benefits described in the employee handbook or plan documents. Benefit terms may change in accordance with applicable plan documents and law.",
+      "legal_justification": "References summary of benefits while avoiding contractual guarantee beyond plan documents; preserves at‑will status.",
+      "last_updated": "2025-07-28"
+    },
+    "sick_leave_notice": {
+      "category": "compliance",
+      "title": "Paid Sick Leave",
+      "clause": "Employee is entitled to paid sick leave in accordance with California law and Company policy. Accrual, carryover, and use of sick leave shall be administered consistent with applicable statutes and local ordinances, and the Company's written policy, which is incorporated by reference.",
+      "legal_justification": "California Healthy Workplaces/Healthy Families Act (as amended) sets minimum sick leave requirements; referencing policy aligns practice and notice.",
+      "last_updated": "2025-07-28"
+    },
+    "wage_and_hour_compliance": {
+      "category": "compliance",
+      "title": "Wage and Hour Compliance",
+      "clause": "The Company shall comply with all applicable wage and hour laws, including minimum wage, overtime, rest breaks, and meal period requirements under California law.",
+      "legal_justification": "California Labor Code §§ 510 (overtime), 512 (meal periods), 1197 (minimum wage) and IWC Wage Orders govern employer obligations.",
+      "last_updated": "2025-07-28"
+    },
+    "meal_rest_breaks_ack": {
+      "category": "compliance",
+      "title": "Meal and Rest Periods",
+      "clause": "The Company provides meal and rest periods in accordance with California law and applicable Industrial Welfare Commission Wage Orders. Employee agrees to accurately record all time worked and to notify the Company if unable to take a compliant meal or rest period.",
+      "legal_justification": "Acknowledges obligations under IWC Wage Orders and supports compliance defense regarding premiums and scheduling.",
+      "last_updated": "2025-07-28"
+    },
+    "timekeeping_attestation": {
+      "category": "employment_terms",
+      "title": "Timekeeping and Off-the-Clock Work",
+      "clause": "Employee agrees to accurately record all hours worked, to refrain from working off the clock, and to obtain authorization for overtime where required. The Company prohibits work without proper time recording.",
+      "legal_justification": "Supports wage-and-hour compliance on accurate records and overtime authorization; reduces off‑the‑clock risk.",
+      "last_updated": "2025-07-28"
+    },
+    "expense_reimbursement": {
+      "category": "employment_terms",
+      "title": "Expense Reimbursement",
+      "clause": "The Company shall reimburse Employee for all reasonable and necessary expenses incurred in the course of employment, provided such expenses are approved in advance and substantiated with appropriate documentation.",
+      "legal_justification": "California Labor Code § 2802 requires reimbursement of necessary expenditures incurred in direct consequence of duties.",
+      "last_updated": "2025-07-28"
+    },
+    "expense_reimbursement_remote": {
+      "category": "employment_terms",
+      "title": "Expense Reimbursement—Remote/Hybrid Work",
+      "clause": "The Company will reimburse necessary business expenses reasonably incurred, which may include a reasonable portion of mobile phone, home internet, and other remote‑work costs, subject to timely submission of documentation and compliance with Company policy.",
+      "legal_justification": "Interprets § 2802 and case law to include certain remote‑work costs as necessary business expenses.",
+      "last_updated": "2025-07-28"
+    },
+    "anti_discrimination_harassment": {
+      "category": "compliance",
+      "title": "Anti-Discrimination and Harassment",
+      "clause": "The Company is committed to providing a workplace free from discrimination, harassment, and retaliation based on any protected characteristic under federal or California law. Employee agrees to comply with all related policies and training.",
+      "legal_justification": "FEHA and Title VII require prevention and remediation of discrimination and harassment; clause aligns with policy obligations.",
+      "last_updated": "2025-07-28"
+    },
+    "nlra_protected_rights": {
+      "category": "compliance",
+      "title": "Protected Rights Carve-Out",
+      "clause": "Nothing in this Agreement is intended to prohibit or restrict Employee from engaging in activity protected by law, including discussing wages, hours, or working conditions, filing or cooperating in an administrative charge, or making truthful disclosures to a government agency or in legal proceedings.",
+      "legal_justification": "Preserves Section 7 rights under the NLRA and related whistleblower protections; prevents overbroad covenants from chilling protected activity.",
+      "last_updated": "2025-07-28"
+    },
+    "confidentiality": {
+      "category": "restrictive_covenants",
+      "title": "Confidentiality and Non-Disclosure",
+      "clause": "During employment, Employee will have access to Company's confidential and proprietary information, including trade secrets, customer lists, financial data, and business strategies ('Confidential Information'). Employee agrees to hold all Confidential Information in strict confidence and not to disclose or use it, except for the sole benefit of the Company, both during and after employment. This obligation does not restrict Employee's right to use general skills and knowledge acquired during employment.",
+      "legal_justification": "California Uniform Trade Secrets Act (Civil Code § 3426 et seq.) protects legitimate business interests without imposing a de facto non‑compete.",
+      "last_updated": "2025-07-28"
+    },
+    "dtsa_whistleblower_notice": {
+      "category": "intellectual_property",
+      "title": "Trade Secret Whistleblower Immunity Notice",
+      "clause": "Employee is hereby notified that under 18 U.S.C. § 1833(b) an individual shall not be held criminally or civilly liable under any federal or state trade secret law for disclosure of a trade secret that is made in confidence to a government official or to an attorney solely for the purpose of reporting or investigating a suspected violation of law, or in a complaint or other document filed in a lawsuit or other proceeding if such filing is made under seal.",
+      "legal_justification": "DTSA requires notice to preserve eligibility for exemplary damages and attorneys' fees in trade secret actions.",
+      "last_updated": "2025-07-28"
+    },
+    "ip_assignment": {
+      "category": "intellectual_property",
+      "title": "Intellectual Property Assignment and Disclosure",
+      "clause": "Employee agrees to promptly disclose and assign to Company all rights, title, and interest in and to any inventions, discoveries, designs, developments, methods, modifications, improvements, ideas, know-how, data, processes, and trade secrets, whether or not patentable or copyrightable, made or conceived by Employee, either alone or jointly with others, during the period of employment, that (a) relate to the Company's business or actual or demonstrably anticipated research and development, or (b) result from any work performed by Employee for the Company. Employee acknowledges receipt of the 'Notice of Employee Rights Concerning Inventions' as required by California Labor Code § 2870, which is attached as Exhibit A to this Agreement and incorporated herein by reference.",
+      "legal_justification": "California Labor Code § 2870 requires notice regarding employee inventions developed on personal time without employer resources; clause ensures compliance via Exhibit A.",
+      "last_updated": "2025-07-28"
+    },
+    "non_compete_prohibition": {
+      "category": "restrictive_covenants",
+      "title": "Non-Compete Prohibition and Enforceable Covenants",
+      "clause": "Company and Employee acknowledge that agreements restraining an individual from engaging in a lawful profession, trade, or business are void and unenforceable under California Business and Professions Code § 16600. This Agreement contains no covenant not to compete. Employee agrees to be bound by the confidentiality and non-solicitation provisions herein, which are narrowly tailored to protect Company's legitimate business interests and are not to be construed as a prohibited non‑compete covenant.",
+      "legal_justification": "Bus. & Prof. Code § 16600, reinforced by recent legislation, voids non‑competes; clause distinguishes permitted protections.",
+      "last_updated": "2025-07-28"
+    },
+    "background_check_consent": {
+      "category": "compliance",
+      "title": "Background Check Consent",
+      "clause": "Employee consents to a background check conducted in accordance with the Fair Credit Reporting Act and California's Investigative Consumer Reporting Agencies Act. Results may be used in employment decisions consistent with applicable law.",
+      "legal_justification": "FCRA (15 U.S.C. § 1681 et seq.) and ICRAA (Cal. Civ. Code § 1786 et seq.) govern procurement and use of consumer reports.",
+      "last_updated": "2025-07-28"
+    },
+    "ban_the_box_timing": {
+      "category": "compliance",
+      "title": "Background Check Timing and Process",
+      "clause": "Any background check will be conducted consistent with applicable law, including timing after a conditional offer, individualized assessment of any criminal history, and required pre‑adverse and adverse action notices, as applicable.",
+      "legal_justification": "California fair‑chance (ban‑the‑box) requirements add timing and process obligations beyond FCRA/ICRAA.",
+      "last_updated": "2025-07-28"
+    },
+    "immigration_compliance": {
+      "category": "compliance",
+      "title": "Immigration Compliance",
+      "clause": "Employment is contingent upon the Employee's ability to provide satisfactory evidence of identity and legal authorization to work in the United States. Employee agrees to complete all required forms, including Form I‑9.",
+      "legal_justification": "IRCA requires employer verification of employment eligibility via Form I‑9.",
+      "last_updated": "2025-07-28"
+    },
+    "arbitration": {
+      "category": "dispute_resolution",
+      "title": "Mutual Arbitration Agreement",
+      "clause": "Except as otherwise provided herein, any and all disputes, claims, or controversies arising out of or relating to Employee's employment with Company, or the termination thereof, shall be resolved by final and binding arbitration. The arbitration shall be conducted by [Arbitration Provider, e.g., JAMS] in [Specify County, e.g., Los Angeles County], California, in accordance with its Employment Arbitration Rules & Procedures. The parties agree to adequate discovery, that the arbitrator shall have the authority to award all remedies otherwise available in court, and that Company shall pay all costs unique to arbitration. This agreement does not apply to claims for workers' compensation, unemployment insurance benefits, or claims that are non‑arbitrable as a matter of law.",
+      "legal_justification": "*Armendariz* requires mutuality, adequate discovery, cost allocation, and availability of statutory remedies for enforceability in CA.",
+      "last_updated": "2025-07-28",
+      "options": [
+        { "key": "jams_provider", "description": "Specify JAMS as provider.", "clause_modification": { "find": "[Arbitration Provider, e.g., JAMS]", "replace": "JAMS" } },
+        { "key": "aaa_provider", "description": "Specify AAA as provider.", "clause_modification": { "find": "[Arbitration Provider, e.g., JAMS]", "replace": "the American Arbitration Association (AAA)" } },
+        { "key": "class_action_waiver", "description": "Include a class and collective action waiver.", "clause_addition": "The parties further agree that any arbitration shall be conducted on an individual basis only and not in a class, collective, or representative action. This waiver is a material and essential part of this arbitration agreement." }
+      ]
+    },
+    "paga_arbitration_notice": {
+      "category": "dispute_resolution",
+      "title": "PAGA Representative Action Carve-Out",
+      "clause": "This arbitration agreement does not apply to representative claims brought under the Private Attorneys General Act of 2004 (PAGA) that are non‑waivable as a matter of law. To the extent any PAGA claim for civil penalties is determined to be non‑arbitrable or non‑waivable, it shall be stayed pending the outcome of any arbitrable individual claims.",
+      "legal_justification": "*Iskanian* and *Viking River* create complex landscape for PAGA waivers; clause preserves enforceability by carving out non‑waivable claims.",
+      "last_updated": "2025-07-28"
+    },
+    "governing_law": {
+      "category": "general_provisions",
+      "title": "Governing Law and Jurisdiction",
+      "clause": "This Agreement shall be governed by and construed in accordance with the laws of the State of California, without regard to its conflict of laws principles. Any disputes arising under or related to this Agreement shall be resolved exclusively in the state or federal courts located in [Specify County, e.g., Los Angeles County], California, or through arbitration as specified herein.",
+      "legal_justification": "California Labor Code § 925 generally prohibits requiring California employees to litigate or arbitrate outside of California.",
+      "last_updated": "2025-07-28"
+    },
+    "handbook_acknowledgment": {
+      "category": "general_provisions",
+      "title": "Employee Handbook Acknowledgment",
+      "clause": "Employee acknowledges receipt of the Company's employee handbook and agrees to comply with all policies and procedures contained therein, as they may be amended from time to time. The handbook is not a contract of employment and does not alter the at-will nature of employment.",
+      "legal_justification": "Acknowledges handbook receipt while preserving at‑will status and avoiding implied contract claims.",
+      "last_updated": "2025-07-28"
+    },
+    "electronic_signatures": {
+      "category": "general_provisions",
+      "title": "Electronic Signatures",
+      "clause": "This Agreement may be executed electronically, and electronic signatures shall be deemed valid and binding to the same extent as handwritten signatures.",
+      "legal_justification": "Electronic Signatures in Global and National Commerce Act and California Uniform Electronic Transactions Act validate electronic signatures.",
+      "last_updated": "2025-07-28"
+    },
+    "entire_agreement": {
+      "category": "general_provisions",
+      "title": "Entire Agreement",
+      "clause": "This Agreement, together with any referenced exhibits and attachments, constitutes the entire agreement between Employee and Company concerning the subject matter hereof, and supersedes all prior and contemporaneous agreements, understandings, negotiations, and discussions, whether oral or written, of the parties. No amendment or modification of this Agreement shall be valid unless in writing and signed by both Employee and an authorized representative of Company.",
+      "legal_justification": "Parol evidence rule prevents introduction of extrinsic evidence to contradict or vary written contract terms.",
+      "last_updated": "2025-07-28"
+    },
+    "severability": {
+      "category": "general_provisions",
+      "title": "Severability",
+      "clause": "If any provision of this Agreement is found by a court of competent jurisdiction to be invalid, illegal, or unenforceable, such provision shall be modified to the minimum extent necessary to make it valid, legal, and enforceable, or if incapable of such modification, shall be severed from this Agreement, and the remainder of this Agreement shall remain in full force and effect.",
+      "legal_justification": "Standard contractual clause ensures that invalidity of one provision does not render the entire agreement void.",
+      "last_updated": "2025-07-28"
+    },
+    "notice": {
+      "category": "general_provisions",
+      "title": "Notice Provisions",
+      "clause": "All notices, requests, demands, and other communications required or permitted under this Agreement shall be in writing and shall be deemed to have been duly given (a) when delivered personally, (b) when sent by confirmed facsimile or email, (c) one (1) business day after being sent by a nationally recognized overnight courier service, or (d) three (3) business days after being mailed by certified or registered mail, return receipt requested, postage prepaid, to the parties at their respective addresses set forth herein or at such other address as either party may specify by written notice to the other.",
+      "legal_justification": "Establishes clear procedures for formal communication between the parties to avoid disputes over proper notification.",
+      "last_updated": "2025-07-28"
+    }
+  }
+}
+
