@@ -92,7 +92,7 @@ Requirements: ${location.state.requirements || 'Standard legal requirements'}
 
 Please provide an improved version of this section only, maintaining legal accuracy and professional formatting.`;
 
-      const response = await fetch(`${config.API_BASE_URL}/generate-contract`, {
+      const response = await fetch(`${config.API_BASE_URL}/api/generate-contract`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

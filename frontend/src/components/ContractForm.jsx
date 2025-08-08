@@ -62,13 +62,33 @@ const ContractForm = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${config.API_BASE_URL}/generate-contract`, {
+      const response = await fetch(`${config.API_BASE_URL}/api/generate-contract`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          contractType: "employment_agreement",
+          parameters: {
+            clientName: formData.clientName,
+            otherPartyName: formData.otherPartyName,
+            "Employee Name": formData.otherPartyName,
+            "Company Name": formData.clientName,
+            "State": "California",
+            "Job Title": "Employee",
+            "Supervisor Title": "Manager",
+            "Work Location": "Company offices and/or remote",
+            "exempt/non-exempt": "exempt",
+            "amount": "competitive salary",
+            "hour/year": "year",
+            "Arbitration Provider, e.g., JAMS": "JAMS",
+            "Specify County, e.g., Los Angeles County": "Los Angeles County",
+            title: formData.contractType,
+            jurisdiction: formData.jurisdiction,
+            requirements: formData.requirements
+          }
+        }),
       });
 
       const data = await response.json();
@@ -78,11 +98,12 @@ const ContractForm = () => {
         navigate('/contract-result', { 
           state: { 
             contract: data.contract,
-            contractType: data.contractType,
-            clientName: data.clientName,
-            otherPartyName: data.otherPartyName,
-            jurisdiction: data.jurisdiction
-          } 
+            contractType: formData.contractType,
+            clientName: formData.clientName,
+            otherPartyName: formData.otherPartyName,
+            jurisdiction: formData.jurisdiction,
+            requirements: formData.requirements
+          }
         });
       } else {
         setError(data.error || 'Failed to generate contract');

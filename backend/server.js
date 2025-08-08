@@ -1,3 +1,4 @@
+
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -6,6 +7,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { authenticateToken } = require('./middleware/authenticateToken.js');
 const { composeContract } = require('./engine/composer.js');
+const aiInterpreter = require('./src/ai-interpreter.js');
 
 dotenv.config();
 
@@ -35,6 +37,8 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// AI Interpreter Routes
+app.use('/api/ai', authenticateToken, aiInterpreter);
 // --- ROUTES ---
 
 app.get('/api/health', (req, res) => res.json({ status: 'OK', timestamp: new Date().toISOString() }));
@@ -144,3 +148,43 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 module.exports = { app, pool };
+<<<<<<< HEAD
+=======
+// Save contract endpoint
+app.post('/api/save-contract', authenticateToken, async (req, res) => {
+  try {
+    const { title, content, contractType } = req.body;
+    const result = await pool.query(
+      'INSERT INTO contracts (user_id, title, content, contract_type) VALUES ($1, $2, $3, $4) RETURNING id',
+      [req.user.userId, title, content, contractType]
+    );
+    res.json({ success: true, contractId: result.rows[0].id });
+/ Save contract endpoint
+app.post('/api/save-contract', 
+authenticateToken, async (req, res) => {
+  try {
+    const { title, content, contractType } 
+= req.body;
+    const result = await pool.query(
+      'INSERT INTO contracts (user_id, 
+title, content, contract_type) VALUES ($1, 
+$2, $3, $4) RETURNING id',
+      [req.user.userId, title, content, 
+contractType]
+    );
+    res.json({ success: true, contractId: 
+result.rows[0].id });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed 
+to save contract' });
+  }
+});
+
+module.exports = { app, pool };
+  } catch 
+(error) {
+    res.status(500).json({ error: 'Failed to save contract' });
+  }
+});
+
+>>>>>>> 05df584 (feat(ai): implement AI interpreter endpoint with Google Gemini 2.5-pro)
