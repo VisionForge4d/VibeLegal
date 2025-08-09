@@ -3,14 +3,22 @@
 *.swp
 *~
 .~lock.*
+Thumbs.db
 
 # Node/Vite build stuff
 node_modules/
 dist/
 .vite/
+.cache/
+tmp/
+temp/
 
 # Log files
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
 # PDF + export artifacts (optional)
 *.pdf
@@ -18,3 +26,18 @@ release.log
 
 # Environment files
 .env
+.env.*
+!.env.example
+
+# Local development files
+*.local
+*.secret
+*.bak
+*.tmp
+
+# Test coverage
+coverage/
+
+# VSCode / IDE settings
+.vscode/
+.idea/
