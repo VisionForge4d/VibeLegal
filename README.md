@@ -1,4 +1,7 @@
-
+🏴‍☠️ Arrr, ye be warned, matey!  
+This here repo be naught but a testin’ harbor fer AI webapp craftin’.  
+She’s full o’ strange code currents, experimentin’ tides, an’ prototype galleons not yet seaworthy.  
+Board at yer own risk, and keep yer cutlass sharp — we be sailin’ the seas o’ development!
 # VibeLegal - AI-Powered Contract Drafting for Lawyers
 
 VibeLegal is a minimal viable product (MVP) that demonstrates an AI-powered contract drafting web application specifically designed for legal professionals. The application combines modern web technologies with OpenAI's GPT models to generate professional, legally compliant contracts quickly and efficiently.
