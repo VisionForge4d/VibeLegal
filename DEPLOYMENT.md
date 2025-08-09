@@ -96,7 +96,7 @@ NODE_ENV=production
 PORT=5000
 DATABASE_URL=postgresql://vibelegal:secure_password_here@localhost:5432/vibelegal
 OPENAI_API_KEY=your_openai_api_key
-JWT_SECRET=your_very_secure_jwt_secret_key
+JWT_SECRET=<your_jwt_secret>
 ```
 
 #### Frontend Build
@@ -237,7 +237,7 @@ cd backend
 heroku create vibelegal-backend
 heroku addons:create heroku-postgresql:hobby-dev
 heroku config:set OPENAI_API_KEY=your_key
-heroku config:set JWT_SECRET=your_secret
+heroku config:set JWT_SECRET=<your_jwt_secret>
 git push heroku main
 ```
 
@@ -367,8 +367,8 @@ volumes:
 #### Deploy with Docker Compose
 ```bash
 # Create .env file with secrets
-echo "OPENAI_API_KEY=your_key" > .env
-echo "JWT_SECRET=your_secret" >> .env
+# Create a local .env with OPENAI_API_KEY=<your_openai_api_key> > .env
+# …and JWT_SECRET=<your_jwt_secret> >> .env
 
 # Start services
 docker-compose up -d
@@ -493,8 +493,8 @@ PORT=5000
 DATABASE_URL=postgresql://user:password@host:port/database
 
 # External Services
-OPENAI_API_KEY=sk-...
-JWT_SECRET=your-very-secure-secret-key
+OPENAI_API_KEY=<your_openai_api_key>...
+JWT_SECRET=<your_jwt_secret>
 
 # Optional: Logging
 LOG_LEVEL=info

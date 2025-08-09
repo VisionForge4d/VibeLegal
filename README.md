@@ -74,8 +74,8 @@ Create a `.env` file in the backend directory:
 ```env
 PORT=5000
 DATABASE_URL=postgresql://username:password@localhost:5432/vibelegal
-OPENAI_API_KEY=your_openai_api_key_here
-JWT_SECRET=your_jwt_secret_key_here
+OPENAI_API_KEY=<your_openai_api_key>
+JWT_SECRET=<your_jwt_secret>
 ```
 
 #### Database Setup
