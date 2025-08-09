@@ -1,0 +1,5 @@
+gsk_[A-Za-z0-9]+==>GROQ_KEY_REDACTED
+sk-[A-Za-z0-9]+==>OPENAI_KEY_REDACTED
+(JWT_SECRET\s*=\s*)\S+==>\1<redacted>
+(OPENAI_API_KEY\s*=\s*)\S+==>\1<redacted>
+(GROQ_API_KEY\s*=\s*)\S+==>\1<redacted>

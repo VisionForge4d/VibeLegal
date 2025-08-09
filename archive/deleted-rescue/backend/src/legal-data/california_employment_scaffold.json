@@ -1,0 +1,38 @@
+{
+  "contract_type": "California Employment Agreement",
+  "title": "EMPLOYMENT AGREEMENT",
+  "description": "This document outlines the terms of employment between an employer and an employee in the state of California.",
+  "clause_order": [
+    "compensation",
+    "at_will_employment",
+    "confidentiality",
+    "ip_assignment",
+    "arbitration",
+    "class_action_waiver",
+    "governing_law",
+    "severability",
+    "entire_agreement"
+  ],
+  "default_options": {
+    "at_will_employment": "default",
+    "compensation": "default",
+    "ip_assignment": "default",
+    "arbitration": "jams_provider",
+    "class_action_waiver": "default",
+    "confidentiality": "default",
+    "governing_law": "default",
+    "entire_agreement": "default",
+    "severability": "default"
+  },
+  "required_parameters": [
+    "client_name",
+    "other_party_name",
+    "annual_salary",
+    "overtime_status",
+    "arbitration_county",
+    "governing_law_county"
+  ],
+  "exhibits": [
+    "EXHIBIT_A_CA_LABOR_CODE_2870.md"
+  ]
+}
