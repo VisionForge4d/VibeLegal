@@ -16,3 +16,5 @@ dist/
 *.pdf
 release.log
 
+# Environment files
+.env
