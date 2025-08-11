@@ -10,10 +10,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // If this module validates env on import, keep it; if it causes noise, comment it out.
-// const env = require('./config/env');
+const env = require('./config/env');
 
 const { authenticateToken } = require('./middleware/authenticateToken.js');
-const { composeContract } = require('./engine/composer.js');
+const helmet = require('helmet');
+const morgan = require('morgan');const { composeContract } = require('./engine/composer.js');
 const aiInterpreter = require('./src/ai-interpreter.js');
 
 // DB pool (single source of truth)
@@ -23,7 +24,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
-app.use(express.json());
+app.use(helmet());
+app.use(morgan('combined'));app.use(express.json());
 
 // --- AI Interpreter ---
 app.use('/api/ai', authenticateToken, aiInterpreter);

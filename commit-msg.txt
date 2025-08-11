@@ -1,0 +1,11 @@
+feat(ai): implement AI interpreter endpoint with Google Gemini 2.5-pro
+
+- Add AI provider abstraction layer with Google AI implementation
+- Create /api/ai/interpret endpoint with model selection and toggle
+- Fix contract generation parameter mapping to eliminate missing data
+- Add save contract endpoint to backend
+- Fix frontend data transformation and navigation state
+- Update API endpoints from /generate-contract to /api/generate-contract
+- Add comprehensive error handling and input validation
+
+Closes #123
