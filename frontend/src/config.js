@@ -1,9 +1,7 @@
 // Frontend configuration for VibeLegal
 const config = {
   // API Base URL - update this when you deploy your backend
-  API_BASE_URL: process.env.NODE_ENV === 'production' 
-    ? 'https://your-backend-app.herokuapp.com'  // Replace with your actual backend URL
-    : 'http://localhost:5000',
+  API_BASE_URL: (typeof import !== "undefined" && typeof import.meta !== "undefined" && import.meta.env && import.meta.env.VITE_API_BASE_URL) ? import.meta.env.VITE_API_BASE_URL : "http://localhost:5000",
     
   // App configuration
   APP_NAME: 'VibeLegal',

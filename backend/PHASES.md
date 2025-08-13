@@ -131,3 +131,8 @@ Status: ✅ Done | 🚧 In Progress | ⏳ Planned
 - Navigate-after-generate → `/contracts/${id}`
 
 **Next:** Phase 1.5 — Deploy (Backend: Railway, Frontend: Vercel, SSL/Domain)
+
+## Phase 1.5 — Deployment — 2025-08-13
+- Backend: env validation present (backend/config/env.js); DB via `DATABASE_URL`, SSL via `PGSSL`.
+- Frontend: reads `import.meta.env.VITE_API_BASE_URL`; no other functional changes.
+- Next: deploy backend to Railway, set env, then point Vercel to Railway URL.
