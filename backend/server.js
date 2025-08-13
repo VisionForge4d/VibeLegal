@@ -10,7 +10,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // If this module validates env on import, keep it; if it causes noise, comment it out.
-const env = require('./config/env');
+const { errorHandler, AppError, asyncHandler } = require('./middleware/errorHandler.js');const env = require('./config/env');
 
 const { authenticateToken } = require('./middleware/authenticateToken.js');
 const helmet = require('helmet');
@@ -286,6 +286,8 @@ app.get('/api/contracts/:id', authenticateToken, async (req, res) => {
   }
 });
 
+// --- Error Handler (must be last) ---
+app.use(errorHandler);
 // --- Server Startup (single listener) ---
 const server = app.listen(PORT, () => {
   console.log(`✅ API listening on ${server.address().port}`);
