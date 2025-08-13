@@ -71,7 +71,11 @@ function App() {
               element={user ? <ContractForm /> : <Navigate to="/login" />} 
             />
             <Route 
-              path="/contract-result" 
+              path="/contract-result"
+              element={user ? <ContractResult /> : <Navigate to="/login" />} 
+            />
+            <Route 
+              path="/contracts/:id" 
               element={user ? <ContractResult /> : <Navigate to="/login" />} 
             />
           </Routes>
@@ -82,4 +86,3 @@ function App() {
 }
 
 export default App;
-

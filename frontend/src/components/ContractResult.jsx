@@ -1,111 +1,155 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  FileText, 
-  Download, 
-  Save, 
-  Edit3, 
-  Eye, 
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  FileText,
+  Download,
+  Save,
+  Edit3,
+  Eye,
   CheckCircle,
   ArrowLeft,
   RefreshCw,
-  Wand2
-} from 'lucide-react';
-import config from '../config.js';
+  Wand2,
+} from "lucide-react";
+import config from "../config.js";
 
 const ContractResult = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [contractContent, setContractContent] = useState('');
-  const [contractTitle, setContractTitle] = useState('');
+  const [contractContent, setContractContent] = useState("");
+  const [contractTitle, setContractTitle] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [regenerating, setRegenerating] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [contractSections, setContractSections] = useState([]);
+  const { id } = useParams();
 
   useEffect(() => {
-    if (!location.state || !location.state.contract) {
-      navigate('/create-contract');
+    if (location.state?.contract) {
+      const { contract, contractType, clientName, otherPartyName } =
+        location.state;
+      setContractContent(contract);
+	console.log("set from state length", (contract||"").length);
+      setContractTitle(`${contractType} - ${clientName} & ${otherPartyName}`);
+      parseContractSections(contract);
       return;
     }
 
-    const { contract, contractType, clientName, otherPartyName } = location.state;
-    setContractContent(contract);
-    setContractTitle(`${contractType} - ${clientName} & ${otherPartyName}`);
-    
-    // Parse contract into sections for easier editing
-    parseContractSections(contract);
-  }, [location.state, navigate]);
+    if (!id) return;
+
+    (async () => {
+      try {
+        const token = localStorage.getItem("token");
+      // Build payload that works for deep-link and state navigation
+      const headingGuess = (contractContent.match(/^#\s*([^\n]+)/)?.[1] || "").trim();
+      const titleGuess = (contractTitle && contractTitle.split(' - ')[0])?.trim();
+      const ctGuess = location.state?.contractType || titleGuess || headingGuess || "Contract";
+      const payload = { title: contractTitle, content: contractContent, contractType: ctGuess };
+      if (id) payload.id = id;
+        const res = await fetch(`${config.API_BASE_URL}/api/contracts/${id}`, {
+          headers: { Authorization: token ? `Bearer ${token}` : undefined },
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.error || `HTTP ${res.status}`);
+
+        const contractText =
+          (data.contract && data.contract.content) ||
+          data.content ||
+          (data.contract && data.contract.body) ||
+          data.contract ||
+          data.body ||
+          data.text ||
+          "";
+        setContractContent(contractText);
+	console.log("set from fetch length", (contractText||"").length);
+
+        const title =
+          (data.contract && data.contract.title) || data.title || "Contract";
+        setContractTitle(title);
+
+        parseContractSections(contractText);
+      } catch (e) {
+        setError(e.message);
+      }
+    })();
+  }, [id, location.state]);
 
   const parseContractSections = (contract) => {
     // Simple section parsing based on numbered headings or clear section breaks
     const sections = [];
-    const lines = contract.split('\n');
-    let currentSection = { title: 'Preamble', content: '' };
-    
+    const lines = contract.split("\n");
+    let currentSection = { title: "Preamble", content: "" };
+
     lines.forEach((line, index) => {
       // Look for section headers (numbered sections, all caps, etc.)
-      if (line.match(/^\d+\.\s+[A-Z\s]+/) || line.match(/^[A-Z\s]{3,}:?\s*$/) || line.match(/^Article\s+\d+/i)) {
+      if (
+        line.match(/^\d+\.\s+[A-Z\s]+/) ||
+        line.match(/^[A-Z\s]{3,}:?\s*$/) ||
+        line.match(/^Article\s+\d+/i)
+      ) {
         if (currentSection.content.trim()) {
           sections.push({ ...currentSection });
         }
-        currentSection = { 
-          title: line.trim() || `Section ${sections.length + 1}`, 
-          content: '' 
+        currentSection = {
+          title: line.trim() || `Section ${sections.length + 1}`,
+          content: "",
         };
       } else {
-        currentSection.content += line + '\n';
+        currentSection.content += line + "\n";
       }
     });
-    
+
     if (currentSection.content.trim()) {
       sections.push(currentSection);
     }
-    
+
     setContractSections(sections);
   };
 
   const handleRegenerateSection = async (sectionIndex) => {
     setRegenerating(true);
-    setError('');
+    setError("");
 
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       const section = contractSections[sectionIndex];
-      
+
       // Create a prompt to regenerate just this section
-      const regeneratePrompt = `Please regenerate the following section of a ${location.state.contractType} for ${location.state.jurisdiction}:
+      const regeneratePrompt = `Please regenerate the following section of a ${location.state?.contractType} for ${location.state?.jurisdiction}:
 
 Section: ${section.title}
 Current content: ${section.content}
 
-Requirements: ${location.state.requirements || 'Standard legal requirements'}
+Requirements: ${location.state?.requirements || "Standard legal requirements"}
 
 Please provide an improved version of this section only, maintaining legal accuracy and professional formatting.`;
 
-      const response = await fetch(`${config.API_BASE_URL}/api/generate-contract`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+      const response = await fetch(
+        `${config.API_BASE_URL}/api/generate-contract`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        body: JSON.stringify(payload),
         },
-        body: JSON.stringify({
-          contractType: location.state.contractType,
-          requirements: regeneratePrompt,
-          clientName: location.state.clientName,
-          otherPartyName: location.state.otherPartyName,
-          jurisdiction: location.state.jurisdiction
-        }),
-      });
+      );
 
       const data = await response.json();
 
@@ -114,15 +158,17 @@ Please provide an improved version of this section only, maintaining legal accur
         const updatedSections = [...contractSections];
         updatedSections[sectionIndex].content = data.contract;
         setContractSections(updatedSections);
-        
+
         // Rebuild the full contract
-        const newContract = updatedSections.map(s => s.title + '\n' + s.content).join('\n\n');
+        const newContract = updatedSections
+          .map((s) => s.title + "\n" + s.content)
+          .join("\n\n");
         setContractContent(newContract);
       } else {
-        setError(data.error || 'Failed to regenerate section');
+        setError(data.error || "Failed to regenerate section");
       }
     } catch (err) {
-      setError('Network error. Please try again.');
+      setError("Network error. Please try again.");
     } finally {
       setRegenerating(false);
     }
@@ -132,46 +178,45 @@ Please provide an improved version of this section only, maintaining legal accur
     const updatedSections = [...contractSections];
     updatedSections[sectionIndex].content = newContent;
     setContractSections(updatedSections);
-    
+
     // Rebuild the full contract
-    const newContract = updatedSections.map(s => s.title + '\n' + s.content).join('\n\n');
+    const newContract = updatedSections
+      .map((s) => s.title + "\n" + s.content)
+      .join("\n\n");
     setContractContent(newContract);
   };
 
   const handleSave = async () => {
     if (!contractTitle.trim()) {
-      setError('Please enter a title for the contract');
+      setError("Please enter a title for the contract");
       return;
     }
 
     setSaving(true);
-    setError('');
+    setError("");
 
-    try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");    try {
       const response = await fetch(`${config.API_BASE_URL}/api/save-contract`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           title: contractTitle,
-          contractType: location.state.contractType,
-          content: contractContent
+          contractType: location.state?.contractType || contractTitle.split(" - ")[0] || "Employment Agreement",
+          content: contractContent,
         }),
       });
-
       const data = await response.json();
-
       if (response.ok) {
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
       } else {
-        setError(data.error || 'Failed to save contract');
+        setError(data.error || "Failed to save contract");
       }
     } catch (err) {
-      setError('Network error. Please try again.');
+      setError("Network error. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -192,39 +237,39 @@ Please provide an improved version of this section only, maintaining legal accur
       </head>
       <body>
         <h1>${contractTitle}</h1>
-        <div class="contract-content">${contractContent}</div>
+        <div className="contract-content">{contractContent}</div>
       </body>
       </html>
     `;
 
-    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const blob = new Blob([htmlContent], { type: "text/html" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = `${contractTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.html`;
+    a.download = `${contractTitle.replace(/[^a-z0-9]/gi, "_").toLowerCase()}.html`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
 
-  if (!location.state) {
-    return null;
+  if (!location.state && !contractContent) {
+    return <div className="p-6">Loading…</div>;
   }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate('/dashboard')}
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/dashboard")}
             className="mb-4"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Dashboard
           </Button>
-          
+
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 flex items-center">
@@ -235,7 +280,7 @@ Please provide an improved version of this section only, maintaining legal accur
                 Review, edit, and save your contract
               </p>
             </div>
-            
+
             {saved && (
               <Alert className="w-auto bg-green-50 border-green-200">
                 <CheckCircle className="h-4 w-4 text-green-600" />
@@ -267,11 +312,13 @@ Please provide an improved version of this section only, maintaining legal accur
                     <TabsTrigger value="full">Full Contract</TabsTrigger>
                     <TabsTrigger value="sections">Edit by Section</TabsTrigger>
                   </TabsList>
-                  
+
                   <TabsContent value="full" className="mt-4">
                     <div className="flex items-center justify-between mb-4">
                       <p className="text-sm text-gray-600">
-                        {isEditing ? 'Edit the full contract below' : 'Review your complete contract'}
+                        {isEditing
+                          ? "Edit the full contract below"
+                          : "Review your complete contract"}
                       </p>
                       <Button
                         variant="outline"
@@ -291,7 +338,7 @@ Please provide an improved version of this section only, maintaining legal accur
                         )}
                       </Button>
                     </div>
-                    
+
                     {isEditing ? (
                       <Textarea
                         value={contractContent}
@@ -307,14 +354,19 @@ Please provide an improved version of this section only, maintaining legal accur
                       </div>
                     )}
                   </TabsContent>
-                  
+
                   <TabsContent value="sections" className="mt-4">
                     <div className="space-y-6">
                       {contractSections.map((section, index) => (
-                        <Card key={index} className="border-l-4 border-l-blue-500">
+                        <Card
+                          key={index}
+                          className="border-l-4 border-l-blue-500"
+                        >
                           <CardHeader className="pb-3">
                             <div className="flex items-center justify-between">
-                              <CardTitle className="text-lg">{section.title}</CardTitle>
+                              <CardTitle className="text-lg">
+                                {section.title}
+                              </CardTitle>
                               <Button
                                 variant="outline"
                                 size="sm"
@@ -338,7 +390,9 @@ Please provide an improved version of this section only, maintaining legal accur
                           <CardContent>
                             <Textarea
                               value={section.content}
-                              onChange={(e) => handleSectionEdit(index, e.target.value)}
+                              onChange={(e) =>
+                                handleSectionEdit(index, e.target.value)
+                              }
                               className="min-h-[150px] font-mono text-sm"
                               placeholder="Section content..."
                             />
@@ -370,12 +424,21 @@ Please provide an improved version of this section only, maintaining legal accur
                     className="mt-1"
                   />
                 </div>
-                
+
                 <div className="text-sm text-gray-600 space-y-1">
-                  <p><strong>Type:</strong> {location.state.contractType}</p>
-                  <p><strong>Client:</strong> {location.state.clientName}</p>
-                  <p><strong>Other Party:</strong> {location.state.otherPartyName}</p>
-                  <p><strong>Jurisdiction:</strong> {location.state.jurisdiction}</p>
+                  <p>
+                    <strong>Type:</strong> {location.state?.contractType}
+                  </p>
+                  <p>
+                    <strong>Client:</strong> {location.state?.clientName}
+                  </p>
+                  <p>
+                    <strong>Other Party:</strong>{" "}
+                    {location.state?.otherPartyName}
+                  </p>
+                  <p>
+                    <strong>Jurisdiction:</strong> {location.state?.jurisdiction}
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -401,7 +464,7 @@ Please provide an improved version of this section only, maintaining legal accur
                   className="w-full"
                 >
                   {saving ? (
-                    'Saving...'
+                    "Saving..."
                   ) : (
                     <>
                       <Save className="mr-2 h-4 w-4" />
@@ -422,7 +485,7 @@ Please provide an improved version of this section only, maintaining legal accur
                 <div className="pt-4 border-t">
                   <Button
                     variant="ghost"
-                    onClick={() => navigate('/create-contract')}
+                    onClick={() => navigate("/create-contract")}
                     className="w-full"
                   >
                     Create Another Contract
@@ -434,12 +497,16 @@ Please provide an improved version of this section only, maintaining legal accur
             {/* Legal Disclaimer */}
             <Card className="bg-yellow-50 border-yellow-200">
               <CardHeader>
-                <CardTitle className="text-yellow-800">Legal Disclaimer</CardTitle>
+                <CardTitle className="text-yellow-800">
+                  Legal Disclaimer
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-yellow-700">
-                  This document is generated by AI and should be reviewed by a qualified attorney before use. 
-                  This does not constitute legal advice. Always consult with a legal professional for important contracts.
+                  This document is generated by AI and should be reviewed by a
+                  qualified attorney before use. This does not constitute legal
+                  advice. Always consult with a legal professional for important
+                  contracts.
                 </p>
               </CardContent>
             </Card>
@@ -451,4 +518,3 @@ Please provide an improved version of this section only, maintaining legal accur
 };
 
 export default ContractResult;
-

@@ -95,7 +95,7 @@ const ContractForm = () => {
 
       if (response.ok) {
         // Navigate to results page with contract data
-        navigate('/contract-result', { 
+        navigate(`/contracts/${data.contract.id}`, { 
           state: { 
             contract: data.contract,
             contractType: formData.contractType,

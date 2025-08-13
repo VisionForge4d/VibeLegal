@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../App';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,11 +18,14 @@ const Dashboard = () => {
   const [contracts, setContracts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
+  const navigate = useNavigate();
   useEffect(() => {
     fetchContracts();
   }, []);
 
+  const handleContractClick = (contractId) => {
+    navigate(`/contracts/${contractId}`);
+  };
   const fetchContracts = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -217,7 +220,8 @@ const Dashboard = () => {
                 {contracts.map((contract) => (
                   <div
                     key={contract.id}
-                    className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors"
+                    onClick={() => handleContractClick(contract.id)}
+                    className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
                   >
                     <div className="flex items-center space-x-4">
                       <div className="bg-blue-100 p-2 rounded-lg">
