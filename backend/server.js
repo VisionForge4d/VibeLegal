@@ -262,6 +262,28 @@ app.post('/api/save-contract', authenticateToken, async (req, res) => {
     console.error('Save contract error:', error);
     res.status(500).json({ error: 'Failed to save contract.' });
   }
+
+});// Get individual contract by ID
+app.get('/api/contracts/:id', authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.user;
+    
+    const result = await timedQuery(
+      `SELECT * FROM contracts WHERE id = $1 AND user_id = $2`,
+      [id, userId],
+      'contracts_get_by_id'
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Contract not found.' });
+    }
+    
+    res.json({ contract: result.rows[0] });
+  } catch (error) {
+    console.error('Get contract error:', error);
+    res.status(500).json({ error: 'Failed to retrieve contract.' });
+  }
 });
 
 // --- Server Startup (single listener) ---
