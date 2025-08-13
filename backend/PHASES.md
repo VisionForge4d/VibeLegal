@@ -34,7 +34,7 @@ Status: ✅ Done | 🚧 In Progress | ⏳ Planned
   - Prometheus metrics visible at `/api/metrics`
 - **Dependencies:** 1.2
 
-### 1.4 Centralized Error Handler — ⏳ Planned
+### 1.4 Centralized Error Handler — ✅ Done
 - **Tasks:**
   - Create `errorHandler` middleware
   - Include `requestId` in error responses
