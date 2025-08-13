@@ -149,7 +149,7 @@ Please provide an improved version of this section only, maintaining legal accur
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${config.API_BASE_URL}/save-contract`, {
+      const response = await fetch(`${config.API_BASE_URL}/api/save-contract`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
