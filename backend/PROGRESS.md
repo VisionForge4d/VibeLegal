@@ -22,3 +22,7 @@
 - Frontend: API_BASE_URL now configurable via `VITE_API_BASE_URL` (fallback http://localhost:5000).
 - Env: `.env.example` lists required keys (DATABASE_URL, PGSSL, OPENAI_API_KEY, GOOGLE_AI_API_KEY, JWT_SECRET, CORS_ORIGIN, PORT).
 - Status: ready to deploy backend → Railway and wire frontend → Vercel.
+
+## 2025-08-14 — Hotfix: VITE Config Syntax ✅
+- Updated `frontend/src/config.js` to correct env handling.
+- Confirmed `npm run dev` starts without esbuild syntax error.

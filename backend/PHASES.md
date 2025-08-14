@@ -136,3 +136,7 @@ Status: ✅ Done | 🚧 In Progress | ⏳ Planned
 - Backend: env validation present (backend/config/env.js); DB via `DATABASE_URL`, SSL via `PGSSL`.
 - Frontend: reads `import.meta.env.VITE_API_BASE_URL`; no other functional changes.
 - Next: deploy backend to Railway, set env, then point Vercel to Railway URL.
+
+### 1.5.1 Hotfix — VITE Config Syntax — ✅ Done (2025-08-14)
+- Fixed `frontend/src/config.js` to use `import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"`.
+- Build now succeeds locally; ready for Vercel deployment using env var.

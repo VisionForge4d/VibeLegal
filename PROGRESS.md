@@ -48,3 +48,8 @@
 - ✅ Error handler integrated and functional
 - ✅ Server boots without errors
 - Ready for Phase 1.5 deployment preparation
+
+## Hotfix: VITE Config Syntax ✅ (2025-08-14)
+- Corrected VITE API base URL detection in `frontend/src/config.js`
+- Replaced invalid `typeof import` check with `import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"`
+- Unblocked local dev and production builds
