@@ -290,7 +290,12 @@ app.get('/api/contracts/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// --- Error Handler (must be last) ---
+app.use("*", (req, res) => {
+  res.status(404).json({
+    requestId: req.id || undefined,
+    error: { code: "NOT_FOUND", message: `Cannot ${req.method} ${req.originalUrl}` }
+  });
+});// --- Error Handler (must be last) ---
 app.use(errorHandler);
 // --- Server Startup (single listener) ---
 const server = app.listen(PORT, () => {
