@@ -1,0 +1,157 @@
+{
+  "jurisdiction": "us_ca",
+  "last_updated": "2025-08-16",
+  "version": "2.0.0",
+  "metadata": {
+    "total_clauses": 6,
+    "total_variations": 18,
+    "risk_levels": ["low", "moderate", "high"],
+    "legal_stances": ["pro_employee", "neutral", "pro_employer"]
+  },
+  "clauses": {
+    "employee_details": {
+      "category": "core",
+      "title": "Employee Details",
+      "variations": {
+        "standard": {
+          "risk_level": "low",
+          "legal_stance": "neutral",
+          "clause": "This Agreement is entered into by and between [Employee Name], an individual, and [Company Name], a [Company Type] (\"Company\"). Employee will report to [Supervisor Name] and will be primarily based at [Work Location].",
+          "legal_justification": "Establishes party identities, reporting structure, and work location to avoid ambiguity on essential employment terms under California Labor Code § 2751."
+        },
+        "detailed_entity": {
+          "risk_level": "low",
+          "legal_stance": "pro_employer",
+          "clause": "This Employment Agreement (\"Agreement\") is entered into on [Date], by and between [Company Name], a [Company Type] incorporated under the laws of [State of Incorporation] with its principal place of business at [Company Address] (\"Company\"), and [Employee Name], an individual residing at [Employee Address] (\"Employee\"). Employee acknowledges receipt of this Agreement and agrees to be bound by all terms herein.",
+          "legal_justification": "Enhanced entity identification for corporate protection and clarity in legal proceedings, with acknowledgment clause to prevent claims of non-receipt."
+        },
+        "comprehensive": {
+          "risk_level": "moderate",
+          "legal_stance": "pro_employer",
+          "clause": "This comprehensive Employment Agreement establishes the complete terms and conditions of employment between [Company Name], a [Company Type] with registration number [Company Registration] (\"Company\"), and [Employee Name], Social Security Number [Employee SSN] (\"Employee\"). This Agreement supersedes all prior negotiations, representations, or agreements relating to Employee's employment and may only be modified in writing signed by both parties. Employee confirms legal authorization to work in the United States.",
+          "legal_justification": "Maximum protection through detailed identification and establishment of jurisdiction for dispute resolution, with work authorization confirmation per I-9 requirements."
+        }
+      }
+    },
+    "at_will_employment": {
+      "category": "core",
+      "title": "At-Will Employment",
+      "variations": {
+        "standard": {
+          "risk_level": "low",
+          "legal_stance": "neutral",
+          "clause": "This employment is at-will, meaning either party may terminate the employment relationship at any time, with or without cause, and with or without notice, subject to applicable law.",
+          "legal_justification": "California Labor Code § 2922 establishes at-will presumption; maintains employer flexibility while acknowledging employee protections under applicable law."
+        },
+        "employer_favorable": {
+          "risk_level": "moderate",
+          "legal_stance": "pro_employer",
+          "clause": "This employment is at-will, meaning either party may terminate the employment relationship at any time, with or without cause, and with or without notice. Employee acknowledges that no supervisor, manager, or Company representative other than the Chief Executive Officer has authority to modify this at-will relationship, and any such modification must be in writing and signed by the CEO.",
+          "legal_justification": "Reinforces at-will status and limits modification authority to prevent claims based on informal statements by supervisors or HR personnel."
+        },
+        "cause_specified": {
+          "risk_level": "moderate",
+          "legal_stance": "pro_employer",
+          "clause": "This employment is at-will, meaning either party may terminate the employment relationship at any time, with or without cause, and with or without notice. For clarity, 'cause' may include but is not limited to: violation of Company policies, dishonesty, breach of fiduciary duty, conviction of a felony, failure to perform essential job functions, or conduct detrimental to Company's business interests. Employee acknowledges that these examples are not exhaustive.",
+          "legal_justification": "Provides specific examples of cause while maintaining at-will flexibility and reducing termination disputes through clear expectations."
+        }
+      }
+    },
+    "compensation": {
+      "category": "core",
+      "title": "Compensation",
+      "variations": {
+        "salary_basic": {
+          "risk_level": "low",
+          "legal_stance": "neutral",
+          "clause": "Employee's compensation shall be [Salary Amount] per [Pay Period], payable in accordance with Company's regular payroll schedule. Compensation is subject to applicable federal, state, and local tax withholdings.",
+          "legal_justification": "Basic salary structure compliant with California Labor Code wage payment requirements and timely payment obligations."
+        },
+        "comprehensive_package": {
+          "risk_level": "moderate",
+          "legal_stance": "neutral",
+          "clause": "Employee's total compensation package consists of: (a) Base salary of [Salary Amount] per [Pay Period], (b) Eligibility for performance-based bonuses at Company's discretion, (c) Participation in Company benefit programs as outlined in employee handbook, and (d) [Vacation Days] vacation days per year, accruing monthly. All compensation is subject to applicable withholdings and Company reserves the right to modify compensation structure with [Notice Period] written notice.",
+          "legal_justification": "Comprehensive package with discretionary elements protected and modification rights preserved, compliant with California wage and hour laws."
+        },
+        "equity_included": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer",
+          "clause": "Employee's compensation includes: (a) Base salary of [Salary Amount] per [Pay Period], and (b) Equity compensation of [Equity Amount] subject to separate Stock Option Agreement and vesting schedule. Employee acknowledges that equity compensation has no guaranteed value and is subject to Company performance, market conditions, and continued employment. All equity grants are governed by Company's Stock Incentive Plan and may be subject to restrictions, forfeiture provisions, and tax implications.",
+          "legal_justification": "Protects Company from equity valuation claims while complying with California Corporations Code § 25102(o) and establishing clear expectations about equity risks."
+        }
+      }
+    },
+    "confidentiality": {
+      "category": "protection",
+      "title": "Confidentiality",
+      "variations": {
+        "standard": {
+          "risk_level": "low",
+          "legal_stance": "neutral",
+          "clause": "Employee agrees to maintain confidentiality of Company's proprietary information and trade secrets during and after employment. This obligation survives termination of employment.",
+          "legal_justification": "Basic confidentiality protection under California Uniform Trade Secrets Act (Civil Code § 3426 et seq.)."
+        },
+        "comprehensive": {
+          "risk_level": "moderate",
+          "legal_stance": "pro_employer",
+          "clause": "Employee acknowledges access to Confidential Information including but not limited to: technical data, business strategies, customer lists, financial information, and proprietary processes. Employee agrees to: (a) maintain strict confidentiality during and after employment, (b) not use Confidential Information for personal benefit, (c) not disclose to third parties without written authorization, and (d) return all materials containing Confidential Information upon termination.",
+          "legal_justification": "Comprehensive protection under California trade secret law with specific obligations and return requirements to strengthen enforceability."
+        },
+        "litigation_hold": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer",
+          "clause": "Employee acknowledges that unauthorized disclosure of Confidential Information would cause irreparable harm to Company for which monetary damages would be inadequate. Employee agrees that Company is entitled to injunctive relief and specific performance to enforce confidentiality obligations, without prejudice to other available remedies. Employee acknowledges that this provision complies with California's restrictions on employment agreements per SB 331 and similar legislation.",
+          "legal_justification": "Maximum protection through equitable remedies while ensuring compliance with California's evolving restrictions on employment agreement enforceability."
+        }
+      }
+    },
+    "termination": {
+      "category": "employment_terms",
+      "title": "Termination",
+      "variations": {
+        "basic": {
+          "risk_level": "low",
+          "legal_stance": "neutral",
+          "clause": "Upon termination of employment for any reason, Employee will receive compensation earned through the termination date and benefits as required by law.",
+          "legal_justification": "Basic termination provision ensuring compliance with California Labor Code final pay requirements."
+        },
+        "comprehensive": {
+          "risk_level": "moderate",
+          "legal_stance": "pro_employer",
+          "clause": "Upon termination, Employee will: (a) receive final compensation as required by California Labor Code § 201-203, (b) return all Company property including devices, documents, and access credentials, (c) cooperate in transitioning responsibilities, and (d) comply with post-employment obligations under this Agreement. Company may conduct exit interviews and will provide COBRA continuation notices as applicable.",
+          "legal_justification": "Comprehensive termination process ensuring property return, transition cooperation, and compliance with California final pay and benefits laws."
+        },
+        "severance_contingent": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer",
+          "clause": "If Company terminates Employee without cause, Employee may be eligible for severance benefits at Company's discretion, contingent upon: (a) execution of separation agreement and release, (b) compliance with post-employment obligations, and (c) cooperation with transition. Any severance is in addition to final pay required by law and does not constitute admission of liability. Severance eligibility does not create contractual rights to continued employment.",
+          "legal_justification": "Conditional severance structure maintaining employer discretion while incentivizing compliance with post-employment obligations and smooth transitions."
+        }
+      }
+    },
+    "governing_law": {
+      "category": "legal",
+      "title": "Governing Law",
+      "variations": {
+        "california_basic": {
+          "risk_level": "low",
+          "legal_stance": "neutral",
+          "clause": "This Agreement shall be governed by and construed in accordance with the laws of the State of California.",
+          "legal_justification": "Basic California law governance for employment relationships subject to California jurisdiction."
+        },
+        "jurisdiction_specified": {
+          "risk_level": "moderate",
+          "legal_stance": "pro_employer",
+          "clause": "This Agreement shall be governed by California law. Any disputes arising under this Agreement shall be subject to the exclusive jurisdiction of the state and federal courts located in [County], California, and both parties consent to personal jurisdiction in such courts.",
+          "legal_justification": "Specific jurisdiction clause to control venue for dispute resolution while maintaining California law governance."
+        },
+        "dispute_resolution": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer",
+          "clause": "This Agreement is governed by California law. Disputes shall be resolved through binding arbitration under the rules of the American Arbitration Association, except for claims for injunctive relief relating to confidentiality or intellectual property, which may be brought in state or federal court in [County], California. The prevailing party in any dispute shall be entitled to reasonable attorneys' fees and costs.",
+          "legal_justification": "Comprehensive dispute resolution with arbitration for efficiency while preserving court access for intellectual property protection and fee-shifting provisions."
+        }
+      }
+    }
+  }
+}
