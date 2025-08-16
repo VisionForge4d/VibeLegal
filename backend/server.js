@@ -15,6 +15,7 @@ const { errorHandler, AppError, asyncHandler } = require('./middleware/errorHand
 const { authenticateToken } = require('./middleware/authenticateToken.js');
 const helmet = require('helmet');
 const morgan = require('morgan');const { composeContract } = require('./engine/composer.js');
+const { composeContractEnhanced } = require('./engine/composer_enhanced.js');
 const aiInterpreter = require('./src/ai-interpreter.js');
 
 // DB pool (single source of truth)
@@ -219,6 +220,38 @@ app.post('/api/generate-contract', authenticateToken, async (req, res) => {
     console.error('Contract generation failed:', error);
     res.status(500).json({ error: 'Failed to generate contract.' });
   }
+});
+
+// Enhanced contract generation endpoint
+app.post('/api/generate-contract-enhanced', authenticateToken, async (req, res) => {
+  const { userInput } = req.body;
+  if (!userInput || !userInput.parameters || !userInput.contractType) {
+    return res.status(400).json({ error: 'Invalid request payload.' });
+  }
+  try {
+    const contractContent = await composeContractEnhanced(userInput);
+    res.json({
+      contract: contractContent.content,
+      metadata: contractContent.metadata,
+      savedContract: {
+        content: contractContent.content,
+        title: userInput.parameters.title || 'Enhanced CA Employment Contract',
+        version: 'enhanced'
+      }
+    });
+  } catch (error) {
+    console.error('Enhanced contract generation failed:', error);
+    res.status(500).json({ error: 'Failed to generate enhanced contract.' });
+  }
+});
+
+// Feature flags endpoint
+app.get('/api/features', authenticateToken, (req, res) => {
+  res.json({
+    enhanced_ca_employment: true,
+    risk_assessment: true,
+    clause_variations: true
+  });
 });
 
 // List user contracts
