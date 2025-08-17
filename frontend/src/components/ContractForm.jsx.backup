@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { FileText, Loader2 } from 'lucide-react';
 import config from '../config.js';
+import { EnhancedContractBuilder } from './EnhancedContractBuilder';
 
 const ContractForm = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +23,7 @@ const ContractForm = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const [isEnhancedMode, setIsEnhancedMode] = useState(false);
   const contractTypes = [
     { value: 'Employment Agreement', label: 'Employment Agreement' },
     { value: 'NDA', label: 'Non-Disclosure Agreement (NDA)' },
@@ -115,6 +117,39 @@ const ContractForm = () => {
     }
   };
 
+  const handleEnhancedGenerate = async (userInput) => {
+    setError("");
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${config.API_BASE_URL}/api/generate-contract-enhanced`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ userInput }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        navigate("/contract-result", {
+          state: {
+            contract: data.contract,
+            metadata: data.metadata,
+            contractType: "Enhanced Employment Agreement",
+            version: "enhanced"
+          }
+        });
+      } else {
+        setError(data.error || "Failed to generate enhanced contract");
+      }
+    } catch (err) {
+      setError("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -137,150 +172,138 @@ const ContractForm = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Contract Details</CardTitle>
-            <CardDescription>
-              Fill out the form below to generate your custom contract
-            </CardDescription>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle>Contract Details</CardTitle>
+                <CardDescription>Fill out the form below to generate your contract</CardDescription>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className={isEnhancedMode ? "text-gray-500" : "font-medium"}>Basic</span>
+                <button
+                  onClick={() => setIsEnhancedMode(!isEnhancedMode)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                    isEnhancedMode ? "bg-blue-600" : "bg-gray-200"
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      isEnhancedMode ? "translate-x-6" : "translate-x-1"
+                    }`}
+                  />
+                </button>
+                <span className={isEnhancedMode ? "font-medium text-blue-600" : "text-gray-500"}>
+                  Pro <span className="text-xs bg-blue-100 text-blue-800 px-1 rounded">ENHANCED</span>
+                </span>
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {error && (
-                <Alert variant="destructive">
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
-              )}
+            {isEnhancedMode ? (
+              <EnhancedContractBuilder 
+                onGenerate={handleEnhancedGenerate}
+                isLoading={loading}
+              />
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {error && (
+                  <Alert variant="destructive">
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
 
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="contractType">Contract Type *</Label>
-                  <Select 
-                    value={formData.contractType} 
-                    onValueChange={(value) => handleInputChange('contractType', value)}
-                  >
-                    <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Select contract type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {contractTypes.map((type) => (
-                        <SelectItem key={type.value} value={type.value}>
-                          {type.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="contractType">Contract Type *</Label>
+                    <Select 
+                      value={formData.contractType} 
+                      onValueChange={(value) => handleInputChange("contractType", value)}
+                    >
+                      <SelectTrigger className="mt-1">
+                        <SelectValue placeholder="Select contract type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {contractTypes.map((type) => (
+                          <SelectItem key={type.value} value={type.value}>
+                            {type.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="jurisdiction">State/Jurisdiction *</Label>
+                    <Select 
+                      value={formData.jurisdiction} 
+                      onValueChange={(value) => handleInputChange("jurisdiction", value)}
+                    >
+                      <SelectTrigger className="mt-1">
+                        <SelectValue placeholder="Select state" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {jurisdictions.map((state) => (
+                          <SelectItem key={state} value={state}>
+                            {state}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="clientName">Your Name/Company *</Label>
+                    <Input
+                      id="clientName"
+                      value={formData.clientName}
+                      onChange={(e) => handleInputChange("clientName", e.target.value)}
+                      placeholder="Your name or company name"
+                      className="mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="otherPartyName">Other Party Name *</Label>
+                    <Input
+                      id="otherPartyName"
+                      value={formData.otherPartyName}
+                      onChange={(e) => handleInputChange("otherPartyName", e.target.value)}
+                      placeholder="Name of the other party"
+                      className="mt-1"
+                    />
+                  </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="jurisdiction">State/Jurisdiction *</Label>
-                  <Select 
-                    value={formData.jurisdiction} 
-                    onValueChange={(value) => handleInputChange('jurisdiction', value)}
-                  >
-                    <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Select state" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {jurisdictions.map((state) => (
-                        <SelectItem key={state} value={state}>
-                          {state}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="clientName">Client Name *</Label>
-                  <Input
-                    id="clientName"
-                    type="text"
-                    value={formData.clientName}
-                    onChange={(e) => handleInputChange('clientName', e.target.value)}
-                    placeholder="Enter client name"
-                    className="mt-1"
+                  <Label htmlFor="requirements">Contract Requirements *</Label>
+                  <Textarea
+                    id="requirements"
+                    value={formData.requirements}
+                    onChange={(e) => handleInputChange("requirements", e.target.value)}
+                    placeholder="Describe your contract requirements in detail..."
+                    className="mt-1 min-h-[120px]"
                   />
                 </div>
 
-                <div>
-                  <Label htmlFor="otherPartyName">Other Party Name *</Label>
-                  <Input
-                    id="otherPartyName"
-                    type="text"
-                    value={formData.otherPartyName}
-                    onChange={(e) => handleInputChange('otherPartyName', e.target.value)}
-                    placeholder="Enter other party name"
-                    className="mt-1"
-                  />
+                <div className="pt-4">
+                  <Button 
+                    type="submit" 
+                    className="w-full" 
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Generating...
+                      </>
+                    ) : (
+                      "Generate Contract"
+                    )}
+                  </Button>
                 </div>
-              </div>
-
-              <div>
-                <Label htmlFor="requirements">Contract Requirements *</Label>
-                <Textarea
-                  id="requirements"
-                  value={formData.requirements}
-                  onChange={(e) => handleInputChange('requirements', e.target.value)}
-                  placeholder="Describe your contract needs in plain English..."
-                  className="mt-1 min-h-[120px]"
-                  rows={6}
-                />
-                <div className="mt-2 space-y-2">
-                  <p className="text-sm text-gray-600 font-medium">
-                    Be as specific as possible. Include details about terms, conditions, compensation, duration, and any special requirements.
-                  </p>
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
-                    <p className="text-sm font-medium text-gray-700 mb-2">Example for Employment Agreement:</p>
-                    <p className="text-sm text-gray-600 italic">
-                      "Software developer position, full-time, $85,000 annual salary, 90-day probation period, 
-                      15 days PTO, health insurance, 401k matching, remote work allowed 2 days per week, 
-                      standard confidentiality and IP assignment clauses, 2-week notice period for termination."
-                    </p>
-                  </div>
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
-                    <p className="text-sm font-medium text-gray-700 mb-2">Example for Service Contract:</p>
-                    <p className="text-sm text-gray-600 italic">
-                      "Web development services, 3-month project duration, $5,000 total fee paid in 3 installments, 
-                      includes website design and development, 2 rounds of revisions, client provides content, 
-                      30-day warranty period, intellectual property transfers to client upon final payment."
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h3 className="font-semibold text-blue-900 mb-2">Important Notice</h3>
-                <p className="text-sm text-blue-800">
-                  All generated contracts include a legal disclaimer and should be reviewed by a qualified attorney before use. 
-                  This service does not constitute legal advice.
-                </p>
-              </div>
-
-              <div className="flex justify-end space-x-4">
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  onClick={() => navigate('/dashboard')}
-                >
-                  Cancel
-                </Button>
-                <Button 
-                  type="submit" 
-                  disabled={loading}
-                  className="min-w-[140px]"
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Generating...
-                    </>
-                  ) : (
-                    'Generate Contract'
-                  )}
-                </Button>
-              </div>
-            </form>
+              </form>
+            )}
           </CardContent>
         </Card>
       </div>
