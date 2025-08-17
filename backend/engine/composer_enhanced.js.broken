@@ -10,9 +10,10 @@ function selectClauseVariation(clauseKey, preferences = {}, clauses) {
     return null; // Signal that we need fallback
   }
 
-  const { risk_tolerance = 'low', legal_stance = 'neutral' } = preferences;
+  const { risk_tolerance = "low", legal_stance = "neutral" } = preferences;
+  const risk_level = risk_tolerance; // Map frontend field to backend field
 
-  for (const [variationKey, variation] of Object.entries(clause.variations)) {
+    if (variation.risk_level === risk_level && variation.legal_stance === legal_stance) {
     if (variation.risk_level === risk_tolerance && variation.legal_stance === legal_stance) {
       return variation;
     }
@@ -29,17 +30,17 @@ async function composeContractEnhanced(userInput) {
     const scaffold = JSON.parse(await fs.readFile(path.join(__dirname, '..', 'contract_employment_agreement.json'), 'utf-8'));
 
     const contractBody = scaffold.clauses.map((clauseKey, index) => {
+      // Try enhanced clause first
       console.log("🎯 Trying enhanced clause for:", clauseKey);
       let selectedVariation = selectClauseVariation(clauseKey, userInput.preferences, enhancedClauses);
       
-      if (!selectedVariation) {
+      // Fall back to original clause if enhanced doesn't exist
         console.log("🔄 Using original clause for:", clauseKey);
+      if (!selectedVariation) {
         selectedVariation = originalClauses.clauses[clauseKey] || { 
           clause: `[Missing clause: ${clauseKey}]`, 
           title: clauseKey 
         };
-      } else {
-        console.log("✅ Using enhanced clause for:", clauseKey);
       }
 
       const populatedClause = populatePlaceholders(selectedVariation.clause, userInput.parameters);
