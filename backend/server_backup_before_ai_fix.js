@@ -7,7 +7,6 @@ const express = require('express');
 const cors = require('cors');
 const prom = require('prom-client');
 const bcrypt = require('bcryptjs');
-const fetch = require("node-fetch");
 const jwt = require('jsonwebtoken');
 
 // If this module validates env on import, keep it; if it causes noise, comment it out.
@@ -211,39 +210,11 @@ app.post('/api/generate-contract', authenticateToken, async (req, res) => {
     return res.status(400).json({ error: 'Invalid request payload. Missing parameters or contractType.' });
   }
   try {
-    // First, analyze requirements with AI
-    const aiAnalysisRequest = {
-      userInput: userInput.requirements || `Generate employment contract for ${userInput.parameters["Employee Name"] || "employee"} at ${userInput.parameters["Company Name"] || "company"}`,
-      useAI: true,
-      model: "gemini-2.5-pro"
-    };
-    
-    let aiResult = null;
-    try {
-      const aiResponse = await fetch(`http://localhost:5000/api/ai/interpret`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: req.headers.authorization
-        },
-        body: JSON.stringify(aiAnalysisRequest)
-      });
-      aiResult = await aiResponse.json();
-    } catch (aiError) {
-      console.log("AI analysis failed, using standard generation:", aiError.message);
-    }
-    
-    const enhancedUserInput = {
-      ...userInput,
-      aiSpec: aiResult?.success ? aiResult.contractSpec : null
-    };
-    
-    const contractContent = await composeContract(enhancedUserInput);
+    const contractContent = await composeContract(userInput);
     res.status(200).json({
-      message: "Contract generated with AI analysis.",
+      message: 'Contract generated successfully.',
       contract: contractContent,
-      aiAnalysis: aiResult?.success ? aiResult.contractSpec : "AI analysis unavailable",
-      savedContract: { content: contractContent, title: userInput.parameters.title || "AI-Enhanced Contract" }
+      savedContract: { content: contractContent, title: userInput.parameters.title || 'Untitled Contract' }
     });
   } catch (error) {
     console.error('Contract generation failed:', error);
@@ -258,42 +229,14 @@ app.post('/api/generate-contract-enhanced', authenticateToken, async (req, res) 
     return res.status(400).json({ error: 'Invalid request payload.' });
   }
   try {
-    // First, analyze requirements with AI
-    const aiAnalysisRequest = {
-      userInput: userInput.requirements || `Generate employment contract for ${userInput.parameters["Employee Name"] || "employee"} at ${userInput.parameters["Company Name"] || "company"}`,
-      useAI: true,
-      model: "gemini-2.5-pro"
-    };
-    
-    let aiResult = null;
-    try {
-      const aiResponse = await fetch(`http://localhost:5000/api/ai/interpret`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: req.headers.authorization
-        },
-        body: JSON.stringify(aiAnalysisRequest)
-      });
-      aiResult = await aiResponse.json();
-    } catch (aiError) {
-      console.log("AI analysis failed, using enhanced generation:", aiError.message);
-    }
-    
-    const enhancedUserInput = {
-      ...userInput,
-      aiSpec: aiResult?.success ? aiResult.contractSpec : null
-    };
-    
-    const contractContent = await composeContractEnhanced(enhancedUserInput);
+    const contractContent = await composeContractEnhanced(userInput);
     res.json({
       contract: contractContent.content,
       metadata: contractContent.metadata,
-      aiAnalysis: aiResult?.success ? aiResult.contractSpec : "AI analysis unavailable",
       savedContract: {
         content: contractContent.content,
-        title: userInput.parameters.title || "AI-Enhanced CA Employment Contract",
-        version: "enhanced"
+        title: userInput.parameters.title || 'Enhanced CA Employment Contract',
+        version: 'enhanced'
       }
     });
   } catch (error) {
