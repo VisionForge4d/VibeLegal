@@ -14,6 +14,7 @@ function selectClauseVariation(clauseKey, preferences = {}, clauses) {
 
   for (const [variationKey, variation] of Object.entries(clause.variations)) {
     if (variation.risk_level === risk_tolerance && variation.legal_stance === legal_stance) {
+    console.log(`🔍 Checking variation ${variationKey}: risk_level=${variation.risk_level}, legal_stance=${variation.legal_stance} vs preferences: risk_tolerance=${risk_tolerance}, legal_stance=${legal_stance}`);
       return variation;
     }
   }
