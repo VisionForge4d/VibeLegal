@@ -1,3 +1,4 @@
+import config from '../config.js';
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../App';
@@ -10,7 +11,8 @@ import {
   Calendar, 
   TrendingUp,
   Clock,
-  CheckCircle
+  CheckCircle,
+  Trash2
 } from 'lucide-react';
 
 const Dashboard = () => {
@@ -18,15 +20,17 @@ const Dashboard = () => {
   const [contracts, setContracts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [deleteConfirm, setDeleteConfirm] = useState(null); // { id, title }
 
   useEffect(() => {
     fetchContracts();
   }, []);
 
   const fetchContracts = async () => {
+    console.log('Fetching contracts...');
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/user-contracts', {
+      const response = await fetch(`${config.API_BASE_URL}/api/user-contracts`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -46,6 +50,30 @@ const Dashboard = () => {
     }
   };
 
+  const deleteContract = async (contractId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${config.API_BASE_URL}/api/contracts/${contractId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setContracts(contracts.filter(contract => contract.id !== contractId));
+        setDeleteConfirm(null);
+      } else {
+        setError(data.error || 'Failed to delete contract');
+      }
+    } catch (err) {
+      setError('Network error. Please try again.');
+    }
+  };
+
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -53,6 +81,7 @@ const Dashboard = () => {
       day: 'numeric'
     });
   };
+
 
   const getContractTypeColor = (type) => {
     const colors = {
@@ -62,8 +91,10 @@ const Dashboard = () => {
       'Independent Contractor': 'bg-orange-100 text-orange-800',
       'Purchase Agreement': 'bg-red-100 text-red-800'
     };
+
     return colors[type] || 'bg-gray-100 text-gray-800';
   };
+
 
   const stats = [
     {
@@ -97,6 +128,7 @@ const Dashboard = () => {
           <p className="text-lg text-gray-600 mt-2">
             Manage your contracts and create new ones with AI assistance
           </p>
+
         </div>
 
         {/* Stats Cards */}
@@ -109,14 +141,20 @@ const Dashboard = () => {
                     <p className="text-sm font-medium text-gray-600">{stat.title}</p>
                     <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
                     <p className="text-sm text-gray-500">{stat.description}</p>
+
                   </div>
                   <div className="bg-gray-50 p-3 rounded-lg">
                     {stat.icon}
+
                   </div>
+
                 </div>
               </CardContent>
             </Card>
+
           ))}
+
+
         </div>
 
         {/* Quick Actions */}
@@ -142,9 +180,12 @@ const Dashboard = () => {
                     Upgrade Plan
                   </Button>
                 </Link>
+
               </div>
             </CardContent>
           </Card>
+
+
         </div>
 
         {/* Usage Limit Warning */}
@@ -162,12 +203,17 @@ const Dashboard = () => {
                       You've used {user.contracts_used_this_month} of 25 contracts this month. 
                       Consider upgrading to Premium for unlimited contracts.
                     </p>
+
                   </div>
+
                 </div>
               </CardContent>
             </Card>
+
+
           </div>
         )}
+
 
         {/* Recent Contracts */}
         <Card>
@@ -178,6 +224,7 @@ const Dashboard = () => {
                 <CardDescription>
                   Your recently created contracts
                 </CardDescription>
+
               </div>
               <Link to="/create-contract">
                 <Button variant="outline" size="sm">
@@ -185,16 +232,19 @@ const Dashboard = () => {
                   New Contract
                 </Button>
               </Link>
+
             </div>
           </CardHeader>
           <CardContent>
             {loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+
               </div>
             ) : error ? (
               <div className="text-center py-8 text-red-600">
                 {error}
+
               </div>
             ) : contracts.length === 0 ? (
               <div className="text-center py-8">
@@ -211,6 +261,7 @@ const Dashboard = () => {
                     Create Your First Contract
                   </Button>
                 </Link>
+
               </div>
             ) : (
               <div className="space-y-4">
@@ -222,6 +273,7 @@ const Dashboard = () => {
                     <div className="flex items-center space-x-4">
                       <div className="bg-blue-100 p-2 rounded-lg">
                         <FileText className="h-5 w-5 text-blue-600" />
+
                       </div>
                       <div>
                         <h3 className="font-medium text-gray-900">
@@ -231,29 +283,77 @@ const Dashboard = () => {
                           <Badge 
                             variant="secondary" 
                             className={getContractTypeColor(contract.contract_type)}
+
                           >
                             {contract.contract_type}
                           </Badge>
                           <span className="text-sm text-gray-500">
                             Created {formatDate(contract.created_at)}
+
                           </span>
+
                         </div>
+
                       </div>
+
                     </div>
                     <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => setDeleteConfirm({ id: contract.id, title: contract.title })}
+
+                        className="p-1 text-red-500 hover:text-red-700 hover:bg-red-50 rounded"
+                        title="Delete contract"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
                       <CheckCircle className="h-5 w-5 text-green-500" />
                       <span className="text-sm text-gray-500">Saved</span>
+
                     </div>
+
                   </div>
                 ))}
+
+
               </div>
             )}
+
           </CardContent>
         </Card>
-      </div>
+
+
+
+        {/* Delete Confirmation Dialog */}
+        {deleteConfirm && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg p-6 max-w-md w-full max-h-screen overflow-y-auto">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">
+                Delete Contract
+              </h3>
+              <p className="text-sm text-gray-600 mb-6">
+                Are you sure you want to delete "{deleteConfirm.title}"? This action cannot be undone.
+              </p>
+              <div className="flex space-x-3 justify-end">
+                <button
+                  onClick={() => setDeleteConfirm(null)}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => deleteContract(deleteConfirm.id)}
+                  className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}      </div>
     </div>
   );
 };
+
 
 export default Dashboard;
 
