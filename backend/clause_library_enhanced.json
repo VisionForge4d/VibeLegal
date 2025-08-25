@@ -1,10 +1,10 @@
 {
   "jurisdiction": "us_ca",
-  "last_updated": "2025-08-16",
-  "version": "2.0.0",
+  "last_updated": "2025-08-25",
+  "version": "3.0.0",
   "metadata": {
-    "total_clauses": 6,
-    "total_variations": 18,
+    "total_clauses": 29,
+    "total_variations": 87,
     "risk_levels": ["low", "moderate", "high"],
     "legal_stances": ["pro_employee", "neutral", "pro_employer"]
   },
@@ -33,6 +33,247 @@
         }
       }
     },
+    "workplace_safety": {
+      "category": "employment_terms",
+      "title": "Workplace Safety and Compliance",
+      "variations": {
+        "basic_safety": {
+          "risk_level": "low",
+          "legal_stance": "neutral",
+          "clause": "Employee agrees to comply with all applicable workplace safety rules, regulations, and Company policies designed to ensure a safe working environment.",
+          "legal_justification": "Basic safety compliance obligation meeting minimum Cal/OSHA requirements."
+        },
+        "comprehensive_safety": {
+          "risk_level": "moderate",
+          "legal_stance": "pro_employer",
+          "clause": "Employee shall comply with all federal, state, and local safety regulations including Cal/OSHA requirements, report safety hazards immediately, participate in required safety training, and use personal protective equipment as directed. Employee acknowledges responsibility for maintaining a safe workplace.",
+          "legal_justification": "Detailed safety compliance with reporting obligations and shared responsibility framework."
+        },
+        "liability_safety": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer",
+          "clause": "Employee assumes responsibility for workplace safety compliance and agrees to indemnify Company for safety violations resulting from Employee's negligent or willful misconduct. Employee shall immediately report injuries, hazards, or safety concerns and participate in all required safety programs, training, and investigations.",
+          "legal_justification": "Comprehensive safety framework with employee indemnification for negligent safety violations."
+        }
+      }
+    },
+    "remote_work": {
+      "category": "employment_terms",
+      "title": "Remote Work and Telecommuting",
+      "variations": {
+        "office_based": {
+          "risk_level": "low",
+          "legal_stance": "pro_employer",
+          "clause": "Employee's primary work location is Company's office at [Work Location]. Remote work may be permitted occasionally at Company's discretion and subject to business needs.",
+          "legal_justification": "Office-centric work arrangement with limited remote work flexibility."
+        },
+        "flexible_remote": {
+          "risk_level": "moderate",
+          "legal_stance": "neutral",
+          "clause": "Employee may work remotely up to [X] days per week subject to manager approval and business requirements. Remote work requires reliable internet, appropriate workspace, and compliance with Company's remote work policies including data security requirements.",
+          "legal_justification": "Balanced remote work arrangement with security and approval requirements."
+        },
+        "full_remote": {
+          "risk_level": "high",
+          "legal_stance": "pro_employee",
+          "clause": "Employee is authorized to work remotely full-time from [Location/State] subject to applicable tax and legal requirements. Company shall provide necessary equipment and technology support. Employee remains responsible for maintaining secure work environment and complying with confidentiality obligations regardless of work location.",
+          "legal_justification": "Full remote work authorization with equipment support and compliance obligations."
+        }
+      }
+    },
+    "expense_reimbursement": {
+      "category": "employment_terms",
+      "title": "Business Expenses and Reimbursement",
+      "variations": {
+        "basic_reimbursement": {
+          "risk_level": "low",
+          "legal_stance": "pro_employee",
+          "clause": "Company shall reimburse Employee for reasonable business expenses incurred in the course of employment upon submission of appropriate documentation in accordance with Company policy.",
+          "legal_justification": "Standard expense reimbursement obligation ensuring employee cost recovery for business activities."
+        },
+        "policy_dependent": {
+          "risk_level": "moderate",
+          "legal_stance": "neutral",
+          "clause": "Employee may incur reasonable business expenses with prior approval as required by Company's expense policy. Reimbursement is subject to proper documentation, receipt submission, and compliance with spending limits and approval requirements.",
+          "legal_justification": "Policy-controlled expense reimbursement with approval and documentation requirements."
+        },
+        "limited_reimbursement": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer",
+          "clause": "Expense reimbursement is discretionary and limited to pre-approved expenses with receipts submitted within 30 days. Employee is responsible for all personal expenses and any business expenses exceeding approved limits. Company may require credit card usage for business expenses to control costs and documentation.",
+          "legal_justification": "Restrictive expense policy with pre-approval requirements and limited reimbursement scope."
+        }
+      }
+    },
+    "performance_evaluation": {
+      "category": "employment_terms",
+      "title": "Performance Evaluation and Review",
+      "variations": {
+        "annual_review": {
+          "risk_level": "low",
+          "legal_stance": "pro_employee",
+          "clause": "Employee shall receive annual performance evaluations assessing job performance, goal achievement, and professional development opportunities. Performance reviews shall be conducted in good faith with opportunity for Employee input and discussion.",
+          "legal_justification": "Structured performance review process with employee participation rights and development focus."
+        },
+        "discretionary_review": {
+          "risk_level": "moderate",
+          "legal_stance": "neutral",
+          "clause": "Company may conduct performance evaluations at such intervals and using such criteria as Company deems appropriate. Performance assessments are confidential management tools and do not create contractual rights or guarantees of continued employment.",
+          "legal_justification": "Flexible performance review approach with disclaimer of contractual performance rights."
+        },
+        "at_will_review": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer",
+          "clause": "Performance evaluations, if conducted, are discretionary management tools that do not alter the at-will employment relationship or create any right to employment continuation. Poor performance reviews may result in immediate termination, and positive reviews do not guarantee job security or prevent termination for any reason.",
+          "legal_justification": "Performance evaluation framework emphasizing at-will employment and disclaiming job security implications."
+        }
+      }
+    },
+    "professional_development": {
+      "category": "employment_terms",
+      "title": "Training and Professional Development",
+      "variations": {
+        "development_support": {
+          "risk_level": "low",
+          "legal_stance": "pro_employee",
+          "clause": "Company encourages Employee's professional development and may provide training opportunities, conference attendance, and educational support subject to budget availability and business needs.",
+          "legal_justification": "Employee-favorable professional development with Company support framework."
+        },
+        "conditional_development": {
+          "risk_level": "moderate",
+          "legal_stance": "neutral",
+          "clause": "Professional development opportunities are discretionary and subject to Company approval, budget constraints, and Employee's continued employment. Employee may be required to remain employed for specified periods following expensive training or education support.",
+          "legal_justification": "Balanced development approach with service commitment requirements for significant investments."
+        },
+        "limited_development": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer",
+          "clause": "Training and development are provided solely at Company's discretion. Employee agrees to reimburse Company for training costs exceeding $[Amount] if employment terminates voluntarily within [12] months. Professional development does not create any obligation for career advancement or salary increases.",
+          "legal_justification": "Cost-protective development policy with reimbursement obligations and disclaimer of advancement expectations."
+        }
+      }
+    },
+    "technology_use": {
+      "category": "general_provisions",
+      "title": "Technology Use and Equipment",
+      "variations": {
+        "basic_tech_policy": {
+          "risk_level": "low",
+          "legal_stance": "neutral",
+          "clause": "Employee shall use Company technology resources in accordance with Company's technology use policies and agrees to return all Company equipment upon termination of employment.",
+          "legal_justification": "Standard technology use compliance with equipment return obligation."
+        },
+        "monitoring_policy": {
+          "risk_level": "moderate",
+          "legal_stance": "pro_employer",
+          "clause": "Employee acknowledges that Company technology systems may be monitored for security, productivity, and policy compliance purposes. Employee has no expectation of privacy in Company systems and agrees to appropriate use policies including restrictions on personal use.",
+          "legal_justification": "Technology monitoring framework with privacy expectation disclaimer and use restrictions."
+        },
+        "comprehensive_monitoring": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer",
+          "clause": "Company reserves the right to monitor, access, and review all use of Company technology resources including email, internet usage, file access, and communications. Employee consents to such monitoring and waives privacy expectations. Violation of technology policies may result in immediate termination and potential legal action for misuse or damage.",
+          "legal_justification": "Extensive technology monitoring with comprehensive consent and enforcement provisions."
+        }
+      }
+    },
+    "social_media": {
+      "category": "general_provisions",
+      "title": "Social Media and Public Communications",
+      "variations": {
+        "basic_social_media": {
+          "risk_level": "low",
+          "legal_stance": "neutral",
+          "clause": "Employee agrees not to disclose Company confidential information through social media or other public communications and to avoid statements that could damage Company's reputation.",
+          "legal_justification": "Basic social media guidelines focusing on confidentiality protection and reputation management."
+        },
+        "comprehensive_social_media": {
+          "risk_level": "moderate",
+          "legal_stance": "pro_employer",
+          "clause": "Employee shall not post content on social media or public forums that identifies Company as employer without approval, discloses confidential information, disparages Company or colleagues, or violates professional standards. Personal opinions must be clearly distinguished from Company positions.",
+          "legal_justification": "Detailed social media policy with identification restrictions and professional standards requirements."
+        },
+        "restrictive_social_media": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer",
+          "clause": "Employee's social media activities are subject to Company review and must comply with professional standards at all times. Employee agrees not to identify Company affiliation, comment on industry matters related to Company business, or engage in online activities that could reflect negatively on Company. Violations may result in disciplinary action up to termination.",
+          "legal_justification": "Restrictive social media policy with broad conduct standards and disciplinary enforcement mechanisms."
+        }
+      }
+    },
+    "immigration_compliance": {
+      "category": "general_provisions",
+      "title": "Immigration and Work Authorization",
+      "variations": {
+        "i9_compliance": {
+          "risk_level": "low",
+          "legal_stance": "neutral",
+          "clause": "Employee represents that Employee is authorized to work in the United States and agrees to provide documentation required by Form I-9 within three days of employment commencement.",
+          "legal_justification": "Basic I-9 compliance ensuring work authorization verification as required by Immigration Reform and Control Act."
+        },
+        "ongoing_authorization": {
+          "risk_level": "moderate",
+          "legal_stance": "pro_employer",
+          "clause": "Employee must maintain valid work authorization throughout employment and promptly notify Company of any changes in immigration status. Company may reverify work authorization as permitted by law, and employment is contingent upon continued work authorization.",
+          "legal_justification": "Ongoing work authorization requirements with notification obligations and reverification rights."
+        },
+        "visa_dependent": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer",
+          "clause": "For employees requiring visa sponsorship, employment is specifically conditioned upon maintenance of valid immigration status. Employee agrees to comply with all visa requirements, notify Company immediately of status changes, and reimburse legal fees if employment terminates voluntarily within [24] months of sponsorship. Failure to maintain status results in immediate termination.",
+          "legal_justification": "Visa-dependent employment framework with comprehensive compliance requirements and fee reimbursement provisions."
+        }
+      }
+    },
+    "background_checks": {
+      "category": "general_provisions",
+      "title": "Background Checks and Screening",
+      "variations": {
+        "standard_background": {
+          "risk_level": "low",
+          "legal_stance": "neutral",
+          "clause": "Employment may be conditioned upon satisfactory completion of background checks as permitted by applicable law, including criminal history and employment verification.",
+          "legal_justification": "Standard background check authorization complying with Fair Credit Reporting Act and California screening laws."
+        },
+        "comprehensive_screening": {
+          "risk_level": "moderate",
+          "legal_stance": "pro_employer",
+          "clause": "Company may conduct background checks including criminal history, credit checks, employment verification, education verification, and professional license checks as job-related and consistent with business necessity. Employee authorizes such investigations and ongoing checks as required for position.",
+          "legal_justification": "Comprehensive screening framework with job-relatedness and business necessity standards."
+        },
+        "ongoing_screening": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer",
+          "clause": "Employee consents to initial and periodic background checks throughout employment including criminal, financial, and professional screening as determined by Company. Employee agrees to promptly disclose any arrests, convictions, or professional sanctions occurring during employment. Adverse findings may result in immediate termination.",
+          "legal_justification": "Ongoing screening authorization with disclosure obligations and termination provisions for adverse findings."
+        }
+      }
+    }
+  }
+}job_title_and_duties": {
+      "category": "employment_terms", 
+      "title": "Position and Duties",
+      "variations": {
+        "basic_role": {
+          "risk_level": "low",
+          "legal_stance": "neutral",
+          "clause": "Employee shall serve as [Job Title] and perform the duties customarily associated with that role, together with other duties reasonably assigned by the Company.",
+          "legal_justification": "Basic role definition with reasonable duty expansion to maintain operational flexibility."
+        },
+        "flexible_duties": {
+          "risk_level": "moderate", 
+          "legal_stance": "pro_employer",
+          "clause": "Employee shall serve as [Job Title] and perform all duties customarily associated with that role, plus additional duties, responsibilities, and projects as assigned by Company management from time to time. Employee's role may evolve based on business needs, and Employee agrees to adapt to changing requirements and cross-functional responsibilities.",
+          "legal_justification": "Broad duty assignment authority protects against claims of constructive dismissal during role changes."
+        },
+        "executive_comprehensive": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer", 
+          "clause": "Employee shall serve as [Job Title] with full authority and responsibility for [Department/Function]. Employee shall devote Employee's full business time, attention, and energies exclusively to Company's business and shall not engage in any other business activity that conflicts with or detracts from Employee's duties hereunder. Employee's duties include strategic planning, operational oversight, team leadership, and such other executive responsibilities as may be designated by the Board of Directors or Chief Executive Officer.",
+          "legal_justification": "Executive-level commitment clause with exclusivity provisions and board-level authority delegation."
+        }
+      }
+    },
     "at_will_employment": {
       "category": "core",
       "title": "At-Will Employment",
@@ -41,117 +282,404 @@
           "risk_level": "low",
           "legal_stance": "neutral",
           "clause": "This employment is at-will, meaning either party may terminate the employment relationship at any time, with or without cause, and with or without notice, subject to applicable law.",
-          "legal_justification": "California Labor Code § 2922 establishes at-will presumption; maintains employer flexibility while acknowledging employee protections under applicable law."
+          "legal_justification": "Basic at-will acknowledgment consistent with California Labor Code § 2922 presumption."
         },
-        "employer_favorable": {
+        "enhanced_acknowledgment": {
           "risk_level": "moderate",
           "legal_stance": "pro_employer",
-          "clause": "This employment is at-will, meaning either party may terminate the employment relationship at any time, with or without cause, and with or without notice. Employee acknowledges that no supervisor, manager, or Company representative other than the Chief Executive Officer has authority to modify this at-will relationship, and any such modification must be in writing and signed by the CEO.",
-          "legal_justification": "Reinforces at-will status and limits modification authority to prevent claims based on informal statements by supervisors or HR personnel."
+          "clause": "This employment is at-will, meaning either party may terminate the employment relationship at any time, with or without cause, and with or without notice. This at-will relationship cannot be changed except by a written agreement signed by both Employee and a designated officer of the Company. Employee acknowledges understanding this at-will nature and waives any claim to the contrary based on conduct, policy, or verbal representation.",
+          "legal_justification": "Strengthened at-will protection with waiver of implied contract claims and modification restrictions."
         },
-        "cause_specified": {
+        "comprehensive_protection": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer",
+          "clause": "Employee acknowledges and agrees that employment is terminable at-will by either party, with or without cause or notice, notwithstanding any other provision in this Agreement. Employee specifically waives any right to claim employment security based on Company policies, practices, or representations. No supervisor or Company representative, other than the Chief Executive Officer in a signed writing, has authority to alter this at-will relationship or make promises of job security.",
+          "legal_justification": "Maximum at-will protection with specific authority limitations and comprehensive waiver provisions."
+        }
+      }
+    },
+    "employee_classification": {
+      "category": "employment_terms",
+      "title": "Employee Classification", 
+      "variations": {
+        "standard_exempt": {
+          "risk_level": "low",
+          "legal_stance": "neutral",
+          "clause": "Employee is classified as [exempt/non-exempt] under federal and California wage and hour laws, affecting eligibility for overtime compensation.",
+          "legal_justification": "Basic classification disclosure required under California Labor Code and IWC Wage Orders."
+        },
+        "detailed_classification": {
           "risk_level": "moderate",
           "legal_stance": "pro_employer",
-          "clause": "This employment is at-will, meaning either party may terminate the employment relationship at any time, with or without cause, and with or without notice. For clarity, 'cause' may include but is not limited to: violation of Company policies, dishonesty, breach of fiduciary duty, conviction of a felony, failure to perform essential job functions, or conduct detrimental to Company's business interests. Employee acknowledges that these examples are not exhaustive.",
-          "legal_justification": "Provides specific examples of cause while maintaining at-will flexibility and reducing termination disputes through clear expectations."
+          "clause": "Employee is classified as [exempt/non-exempt] under the Fair Labor Standards Act and California wage and hour laws. If exempt, Employee is not entitled to overtime pay, rest breaks, or meal period premiums. Employee acknowledges that this classification has been explained and agrees to the associated terms and conditions of employment.",
+          "legal_justification": "Detailed exemption acknowledgment to prevent misclassification claims and establish employee understanding."
+        },
+        "comprehensive_exempt": {
+          "risk_level": "high", 
+          "legal_stance": "pro_employer",
+          "clause": "Employee is classified as exempt from overtime under California Labor Code § 515 and federal Fair Labor Standards Act as an executive, administrative, or professional employee. Employee acknowledges earning above the minimum salary threshold and possessing the requisite discretionary authority. Employee waives any claim to overtime, double-time, rest break premiums, or meal period compensation, understanding that exempt status requires occasional work beyond normal business hours.",
+          "legal_justification": "Comprehensive exempt employee acknowledgment with waiver provisions and salary threshold confirmation."
         }
       }
     },
     "compensation": {
-      "category": "core",
+      "category": "employment_terms",
       "title": "Compensation",
       "variations": {
-        "salary_basic": {
-          "risk_level": "low",
-          "legal_stance": "neutral",
-          "clause": "Employee's compensation shall be [Salary Amount] per [Pay Period], payable in accordance with Company's regular payroll schedule. Compensation is subject to applicable federal, state, and local tax withholdings.",
-          "legal_justification": "Basic salary structure compliant with California Labor Code wage payment requirements and timely payment obligations."
+        "basic_salary": {
+          "risk_level": "low", 
+          "legal_stance": "pro_employee",
+          "clause": "Company shall pay Employee an annual base salary of [Annual Salary], payable in equal installments according to Company's regular payroll schedule. Salary shall be reviewed annually for potential adjustment.",
+          "legal_justification": "Straightforward salary provision with annual review commitment favorable to employee expectations."
+        },
+        "performance_based": {
+          "risk_level": "moderate",
+          "legal_stance": "neutral", 
+          "clause": "Employee shall receive an annual base salary of [Annual Salary], subject to applicable tax withholdings and deductions. Additional compensation may include performance bonuses, equity participation, or other incentive compensation as determined by Company in its sole discretion based on individual and Company performance.",
+          "legal_justification": "Balanced compensation structure with performance incentives while maintaining Company discretion over variable pay."
         },
         "comprehensive_package": {
-          "risk_level": "moderate",
-          "legal_stance": "neutral",
-          "clause": "Employee's total compensation package consists of: (a) Base salary of [Salary Amount] per [Pay Period], (b) Eligibility for performance-based bonuses at Company's discretion, (c) Participation in Company benefit programs as outlined in employee handbook, and (d) [Vacation Days] vacation days per year, accruing monthly. All compensation is subject to applicable withholdings and Company reserves the right to modify compensation structure with [Notice Period] written notice.",
-          "legal_justification": "Comprehensive package with discretionary elements protected and modification rights preserved, compliant with California wage and hour laws."
-        },
-        "equity_included": {
           "risk_level": "high",
           "legal_stance": "pro_employer",
-          "clause": "Employee's compensation includes: (a) Base salary of [Salary Amount] per [Pay Period], and (b) Equity compensation of [Equity Amount] subject to separate Stock Option Agreement and vesting schedule. Employee acknowledges that equity compensation has no guaranteed value and is subject to Company performance, market conditions, and continued employment. All equity grants are governed by Company's Stock Incentive Plan and may be subject to restrictions, forfeiture provisions, and tax implications.",
-          "legal_justification": "Protects Company from equity valuation claims while complying with California Corporations Code § 25102(o) and establishing clear expectations about equity risks."
+          "clause": "Employee's total compensation package consists of: (a) base salary of [Annual Salary] subject to Company's standard payroll deductions; (b) eligibility for discretionary bonuses based on performance metrics established by Company; (c) equity compensation subject to vesting schedules and Company equity plans; and (d) benefits package as modified from time to time. Employee acknowledges that all compensation components beyond base salary are discretionary and may be modified or discontinued without notice.",
+          "legal_justification": "Comprehensive compensation framework with maximum employer flexibility and discretionary benefit modifications."
+        }
+      }
+    },
+    "benefits": {
+      "category": "employment_terms",
+      "title": "Employee Benefits",
+      "variations": {
+        "standard_benefits": {
+          "risk_level": "low",
+          "legal_stance": "pro_employee", 
+          "clause": "Employee shall be eligible for Company's standard employee benefits package, including health insurance, retirement plan participation, and other benefits generally available to similarly situated employees.",
+          "legal_justification": "Basic benefits eligibility with comparison to peer employees ensuring equitable treatment."
+        },
+        "discretionary_benefits": {
+          "risk_level": "moderate",
+          "legal_stance": "neutral",
+          "clause": "Employee may participate in Company benefit programs as established and modified by Company from time to time, including but not limited to health insurance, retirement plans, and other fringe benefits. Benefits are subject to the terms of applicable plan documents and Company policies.",
+          "legal_justification": "Flexible benefits provision allowing Company modification while referencing controlling plan documents."
+        },
+        "limited_benefits": {
+          "risk_level": "high", 
+          "legal_stance": "pro_employer",
+          "clause": "Employee's participation in Company benefit programs is entirely discretionary and may be modified, suspended, or terminated by Company without notice. No benefit continuation rights vest during employment, and Employee waives any claim to benefits beyond those explicitly provided in writing during each plan year. COBRA and other statutory benefits remain available as required by law.",
+          "legal_justification": "Maximum employer flexibility in benefit administration with clear disclaimer of vested rights and statutory compliance."
+        }
+      }
+    },
+    "vacation_policy": {
+      "category": "employment_terms", 
+      "title": "Vacation and Time Off",
+      "variations": {
+        "accrued_vacation": {
+          "risk_level": "low",
+          "legal_stance": "pro_employee",
+          "clause": "Employee shall accrue [X] days of paid vacation annually, prorated for partial years. Unused vacation may be carried forward subject to Company policy, and accrued vacation shall be paid upon termination as required by California Labor Code § 227.3.",
+          "legal_justification": "Employee-favorable vacation accrual with carryforward rights and mandatory payout upon termination."
+        },
+        "pto_policy": {
+          "risk_level": "moderate",
+          "legal_stance": "neutral",
+          "clause": "Employee is entitled to paid time off (PTO) according to Company's PTO policy as amended from time to time. PTO includes vacation, personal days, and other discretionary time off. Usage requires advance approval and is subject to business needs and scheduling requirements.",
+          "legal_justification": "Flexible PTO approach with management approval requirements and business needs consideration."
+        },
+        "unlimited_pto": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer", 
+          "clause": "Company provides flexible, unlimited paid time off subject to manager approval and business requirements. No vacation accrues under this policy, and no payout is owed upon termination. Employee acknowledges that unlimited PTO is a discretionary benefit that may be modified or revoked, and that reasonable time off usage is expected to maintain productivity and meet job responsibilities.",
+          "legal_justification": "Unlimited PTO policy eliminates accrual obligations and termination payouts while maintaining productivity expectations."
+        }
+      }
+    },
+    "sick_leave": {
+      "category": "employment_terms",
+      "title": "Sick Leave",
+      "variations": {
+        "california_minimum": {
+          "risk_level": "low",
+          "legal_stance": "pro_employee",
+          "clause": "Employee shall accrue paid sick leave at the rate of one hour for every 30 hours worked, with a minimum of 24 hours (3 days) available annually as required by California Labor Code § 245 et seq. Unused sick leave may be carried forward to subsequent years up to a cap of 48 hours.",
+          "legal_justification": "Complies with California's minimum paid sick leave requirements with employee-favorable carryforward provisions."
+        },
+        "enhanced_sick_leave": {
+          "risk_level": "moderate", 
+          "legal_stance": "neutral",
+          "clause": "Employee accrues paid sick leave according to California Labor Code requirements and may use accrued time for employee or family member illness, medical appointments, or domestic violence situations. Sick leave usage requires appropriate documentation for absences exceeding three consecutive days.",
+          "legal_justification": "Standard California sick leave compliance with documentation requirements for extended absences."
+        },
+        "integrated_pto": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer", 
+          "clause": "Sick leave entitlements are integrated into Company's comprehensive PTO policy. While California's minimum sick leave accrual is provided, Employee acknowledges that PTO may be used for any absence purpose, and separate sick leave tracking may not be maintained if PTO exceeds minimum requirements.",
+          "legal_justification": "PTO integration approach minimizing administrative burden while ensuring statutory compliance."
+        }
+      }
+    },
+    "intellectual_property": {
+      "category": "confidentiality_ip",
+      "title": "Intellectual Property Assignment",
+      "variations": {
+        "standard_assignment": {
+          "risk_level": "low",
+          "legal_stance": "neutral",
+          "clause": "Employee assigns to Company all inventions, discoveries, and creative works conceived or developed during employment that relate to Company's business or result from Employee's access to Company's confidential information or resources.",
+          "legal_justification": "Standard intellectual property assignment covering work-related innovations with business relationship requirement."
+        },
+        "broad_assignment": {
+          "risk_level": "moderate",
+          "legal_stance": "pro_employer",
+          "clause": "Employee irrevocably assigns to Company all right, title, and interest in inventions, processes, designs, software, creative works, and improvements conceived, developed, or reduced to practice during employment, whether alone or jointly with others, that either (a) relate to Company's business; (b) result from use of Company time, materials, or facilities; or (c) are suggested by Company work or confidential information.",
+          "legal_justification": "Comprehensive IP assignment covering multiple trigger categories while remaining within reasonable employment scope."
+        },
+        "maximum_assignment": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer", 
+          "clause": "Employee assigns to Company all intellectual property rights in any invention, discovery, improvement, design, process, software code, creative work, or know-how conceived, created, or developed during employment, regardless of location or time of creation, except as specifically excluded by California Labor Code § 2870. Employee waives moral rights where permissible and agrees to assist in obtaining patents and other protection. This assignment includes modifications to pre-existing works and derivative works.",
+          "legal_justification": "Broadest permissible IP assignment under California law with comprehensive scope and enforcement provisions."
+        }
+      }
+    },
+    "non_compete": {
+      "category": "confidentiality_ip", 
+      "title": "Non-Competition and Non-Solicitation",
+      "variations": {
+        "california_compliant": {
+          "risk_level": "low",
+          "legal_stance": "pro_employee",
+          "clause": "Employee acknowledges that California Business and Professions Code § 16600 prohibits non-competition agreements. Employee agrees not to use Company's confidential information to compete unfairly or solicit Company's employees for [6] months after termination.",
+          "legal_justification": "California-compliant approach focusing on trade secret protection and limited non-solicitation rather than prohibited non-compete."
+        },
+        "non_solicitation_focus": {
+          "risk_level": "moderate", 
+          "legal_stance": "neutral",
+          "clause": "While California law prohibits restraints on Employee's right to engage in lawful profession, Employee agrees for [12] months after termination not to: (a) directly solicit Company employees to leave their employment; (b) use Company's confidential customer information for competitive purposes; or (c) disclose trade secrets to competitors.",
+          "legal_justification": "Focused non-solicitation and trade secret protection within California's legal framework."
+        },
+        "maximum_protection": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer",
+          "clause": "Employee covenants that for [18] months following termination, Employee will not: (a) recruit, solicit, or hire Company employees or independent contractors; (b) contact Company customers or prospects using confidential information; (c) compete using Company trade secrets; or (d) interfere with Company's business relationships. Employee acknowledges these restrictions protect legitimate business interests and are reasonable in scope and duration.",
+          "legal_justification": "Comprehensive post-employment restrictions focusing on protectable interests while avoiding prohibited non-compete provisions under California law."
         }
       }
     },
     "confidentiality": {
-      "category": "protection",
-      "title": "Confidentiality",
+      "category": "confidentiality_ip",
+      "title": "Confidentiality and Trade Secrets",
       "variations": {
-        "standard": {
+        "basic_confidentiality": {
           "risk_level": "low",
           "legal_stance": "neutral",
-          "clause": "Employee agrees to maintain confidentiality of Company's proprietary information and trade secrets during and after employment. This obligation survives termination of employment.",
-          "legal_justification": "Basic confidentiality protection under California Uniform Trade Secrets Act (Civil Code § 3426 et seq.)."
+          "clause": "Employee agrees to maintain confidentiality of Company's proprietary information, trade secrets, and confidential business information during and after employment, and to return all Company materials upon termination.",
+          "legal_justification": "Standard confidentiality obligation with material return requirement protecting basic trade secret interests."
         },
-        "comprehensive": {
-          "risk_level": "moderate",
+        "comprehensive_nda": {
+          "risk_level": "moderate", 
           "legal_stance": "pro_employer",
-          "clause": "Employee acknowledges access to Confidential Information including but not limited to: technical data, business strategies, customer lists, financial information, and proprietary processes. Employee agrees to: (a) maintain strict confidentiality during and after employment, (b) not use Confidential Information for personal benefit, (c) not disclose to third parties without written authorization, and (d) return all materials containing Confidential Information upon termination.",
-          "legal_justification": "Comprehensive protection under California trade secret law with specific obligations and return requirements to strengthen enforceability."
+          "clause": "Employee acknowledges access to Company's valuable confidential information including customer lists, financial data, business strategies, technical information, and trade secrets. Employee agrees to maintain strict confidentiality during and after employment, use confidential information solely for Company benefit, and implement reasonable security measures to prevent disclosure.",
+          "legal_justification": "Detailed confidentiality framework with specific information categories and use restrictions."
         },
-        "litigation_hold": {
+        "trade_secret_protection": {
           "risk_level": "high",
           "legal_stance": "pro_employer",
-          "clause": "Employee acknowledges that unauthorized disclosure of Confidential Information would cause irreparable harm to Company for which monetary damages would be inadequate. Employee agrees that Company is entitled to injunctive relief and specific performance to enforce confidentiality obligations, without prejudice to other available remedies. Employee acknowledges that this provision complies with California's restrictions on employment agreements per SB 331 and similar legislation.",
-          "legal_justification": "Maximum protection through equitable remedies while ensuring compliance with California's evolving restrictions on employment agreement enforceability."
+          "clause": "Employee acknowledges that Company's confidential information constitutes valuable trade secrets under California Civil Code § 3426 et seq. Employee agrees to: (a) maintain absolute confidentiality indefinitely; (b) implement Company-approved security protocols; (c) report any suspected breaches immediately; (d) submit to exit interviews and certification of compliance; and (e) consent to injunctive relief for violations. Confidential information includes all non-public business information regardless of form or marking.",
+          "legal_justification": "Maximum trade secret protection with comprehensive compliance requirements and enforcement mechanisms."
         }
       }
     },
-    "termination": {
-      "category": "employment_terms",
-      "title": "Termination",
+    "termination_notice": {
+      "category": "termination",
+      "title": "Termination Notice",
       "variations": {
-        "basic": {
+        "standard_notice": {
+          "risk_level": "low", 
+          "legal_stance": "pro_employee",
+          "clause": "Either party may terminate this Agreement with [two weeks] written notice. Company may provide pay in lieu of notice at its discretion.",
+          "legal_justification": "Standard notice period with pay-in-lieu option providing employee income protection during transition."
+        },
+        "asymmetric_notice": {
+          "risk_level": "moderate",
+          "legal_stance": "neutral",
+          "clause": "Employee may resign with [two weeks] notice. Company may terminate Employee immediately or with such notice as Company deems appropriate, and may provide severance pay in lieu of notice based on circumstances of termination.",
+          "legal_justification": "Asymmetric notice allowing Company immediate termination flexibility while maintaining resignation courtesy period."
+        },
+        "immediate_termination": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer", 
+          "clause": "Employment may be terminated immediately by either party without notice. Company reserves the right to escort Employee from premises immediately upon termination and may disable access to Company systems without advance notice. Any final pay will be provided according to California Labor Code requirements.",
+          "legal_justification": "Maximum termination flexibility for Company with immediate access revocation and statutory compliance."
+        }
+      }
+    },
+    "severance_pay": {
+      "category": "termination",
+      "title": "Severance and Termination Benefits", 
+      "variations": {
+        "no_severance": {
+          "risk_level": "low",
+          "legal_stance": "pro_employer",
+          "clause": "No severance pay or benefits are provided upon termination except as required by law. Employee's final paycheck will include accrued wages, unused vacation, and other earned compensation through the termination date.",
+          "legal_justification": "Clear disclaimer of severance obligations while ensuring statutory final pay compliance."
+        },
+        "conditional_severance": {
+          "risk_level": "moderate",
+          "legal_stance": "neutral", 
+          "clause": "Company may, in its sole discretion, provide severance benefits to Employee upon involuntary termination without cause, conditioned upon Employee's execution of a separation agreement including release of claims and compliance with post-employment obligations.",
+          "legal_justification": "Discretionary severance approach tied to separation agreement execution and continued obligation compliance."
+        },
+        "structured_severance": {
+          "risk_level": "high",
+          "legal_stance": "pro_employee",
+          "clause": "Upon involuntary termination without cause, Employee shall receive: (a) [X] weeks base salary continuation; (b) COBRA premium payment for [X] months; (c) outplacement services; and (d) accelerated vesting of [X]% of unvested equity awards. Severance is conditioned upon execution of separation agreement and compliance with restrictive covenants.",
+          "legal_justification": "Comprehensive severance package providing income bridge and benefit continuation while securing legal releases."
+        }
+      }
+    },
+    "dispute_resolution": {
+      "category": "general_provisions",
+      "title": "Dispute Resolution", 
+      "variations": {
+        "court_jurisdiction": {
           "risk_level": "low",
           "legal_stance": "neutral",
-          "clause": "Upon termination of employment for any reason, Employee will receive compensation earned through the termination date and benefits as required by law.",
-          "legal_justification": "Basic termination provision ensuring compliance with California Labor Code final pay requirements."
+          "clause": "Any disputes arising under this Agreement shall be resolved in the state or federal courts of [County], California, and both parties consent to personal jurisdiction and venue in such courts.",
+          "legal_justification": "Standard court jurisdiction clause complying with California Labor Code § 925 prohibition on out-of-state litigation requirements."
         },
-        "comprehensive": {
-          "risk_level": "moderate",
+        "mediation_arbitration": {
+          "risk_level": "moderate", 
           "legal_stance": "pro_employer",
-          "clause": "Upon termination, Employee will: (a) receive final compensation as required by California Labor Code § 201-203, (b) return all Company property including devices, documents, and access credentials, (c) cooperate in transitioning responsibilities, and (d) comply with post-employment obligations under this Agreement. Company may conduct exit interviews and will provide COBRA continuation notices as applicable.",
-          "legal_justification": "Comprehensive termination process ensuring property return, transition cooperation, and compliance with California final pay and benefits laws."
+          "clause": "Disputes shall be resolved through binding arbitration administered by JAMS under California law, except that either party may seek preliminary injunctive relief in court. The arbitrator's award shall be final and enforceable in any court of competent jurisdiction.",
+          "legal_justification": "Mandatory arbitration with carve-out for injunctive relief balancing efficiency with equitable remedies."
         },
-        "severance_contingent": {
+        "comprehensive_arbitration": {
           "risk_level": "high",
           "legal_stance": "pro_employer",
-          "clause": "If Company terminates Employee without cause, Employee may be eligible for severance benefits at Company's discretion, contingent upon: (a) execution of separation agreement and release, (b) compliance with post-employment obligations, and (c) cooperation with transition. Any severance is in addition to final pay required by law and does not constitute admission of liability. Severance eligibility does not create contractual rights to continued employment.",
-          "legal_justification": "Conditional severance structure maintaining employer discretion while incentivizing compliance with post-employment obligations and smooth transitions."
+          "clause": "All employment-related claims, including but not limited to discrimination, harassment, wage and hour, wrongful termination, and breach of contract claims, shall be resolved exclusively through final binding arbitration under JAMS Employment Arbitration Rules. Each party shall bear their own fees and costs unless otherwise required by law. Class and collective actions are waived.",
+          "legal_justification": "Comprehensive mandatory arbitration with class action waiver and broad claim coverage, subject to applicable enforceability standards."
         }
       }
     },
     "governing_law": {
-      "category": "legal",
+      "category": "general_provisions",
       "title": "Governing Law",
       "variations": {
-        "california_basic": {
+        "california_law": {
           "risk_level": "low",
-          "legal_stance": "neutral",
-          "clause": "This Agreement shall be governed by and construed in accordance with the laws of the State of California.",
-          "legal_justification": "Basic California law governance for employment relationships subject to California jurisdiction."
+          "legal_stance": "neutral", 
+          "clause": "This Agreement shall be governed by and construed in accordance with the laws of the State of California, without regard to conflict of law principles.",
+          "legal_justification": "Standard California governing law provision ensuring application of California employment protections."
         },
-        "jurisdiction_specified": {
+        "federal_preemption": {
           "risk_level": "moderate",
           "legal_stance": "pro_employer",
-          "clause": "This Agreement shall be governed by California law. Any disputes arising under this Agreement shall be subject to the exclusive jurisdiction of the state and federal courts located in [County], California, and both parties consent to personal jurisdiction in such courts.",
-          "legal_justification": "Specific jurisdiction clause to control venue for dispute resolution while maintaining California law governance."
+          "clause": "This Agreement is governed by California law except where preempted by federal law. Federal law shall control matters including but not limited to immigration, ERISA benefits, securities regulation, and interstate commerce issues.",
+          "legal_justification": "Governing law clause with federal preemption recognition for applicable interstate and federal regulatory matters."
         },
-        "dispute_resolution": {
+        "choice_of_law": {
           "risk_level": "high",
-          "legal_stance": "pro_employer",
-          "clause": "This Agreement is governed by California law. Disputes shall be resolved through binding arbitration under the rules of the American Arbitration Association, except for claims for injunctive relief relating to confidentiality or intellectual property, which may be brought in state or federal court in [County], California. The prevailing party in any dispute shall be entitled to reasonable attorneys' fees and costs.",
-          "legal_justification": "Comprehensive dispute resolution with arbitration for efficiency while preserving court access for intellectual property protection and fee-shifting provisions."
+          "legal_stance": "pro_employer", 
+          "clause": "This Agreement shall be governed by California law for employment matters and Delaware law for corporate governance, equity, and fiduciary duty issues. Where conflicts exist, the law most favorable to Company's legitimate business interests shall apply, provided California employment protections are preserved as required by California Labor Code § 925.",
+          "legal_justification": "Sophisticated choice-of-law provision balancing corporate flexibility with mandatory California employment law protections."
         }
       }
-    }
-  }
-}
+    },
+    "handbook_acknowledgment": {
+      "category": "general_provisions",
+      "title": "Employee Handbook Acknowledgment",
+      "variations": {
+        "basic_acknowledgment": {
+          "risk_level": "low", 
+          "legal_stance": "neutral",
+          "clause": "Employee acknowledges receipt of Company's employee handbook and agrees to comply with policies contained therein as amended from time to time.",
+          "legal_justification": "Simple handbook acknowledgment creating policy compliance obligation."
+        },
+        "contract_disclaimer": {
+          "risk_level": "moderate",
+          "legal_stance": "pro_employer",
+          "clause": "Employee acknowledges receipt of the employee handbook and agrees to comply with all policies as amended. The handbook is not a contract of employment and does not create contractual rights or modify the at-will employment relationship.",
+          "legal_justification": "Handbook acknowledgment with contract disclaimer preventing implied contract claims from policy language."
+        },
+        "comprehensive_disclaimer": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer", 
+          "clause": "Employee acknowledges that Company policies, including the employee handbook, are guidelines subject to change without notice and do not create contractual rights, alter at-will employment, or constitute promises of specific treatment. Employee waives any claim based on policy language or past practice and agrees that only this written Agreement governs the employment relationship.",
+          "legal_justification": "Maximum protection against implied contract claims with comprehensive policy disclaimer and waiver provisions."
+        }
+      }
+    },
+    "electronic_signatures": {
+      "category": "general_provisions", 
+      "title": "Electronic Signatures",
+      "variations": {
+        "basic_electronic": {
+          "risk_level": "low",
+          "legal_stance": "neutral",
+          "clause": "This Agreement may be executed electronically, and electronic signatures shall be deemed valid and binding.",
+          "legal_justification": "Basic electronic signature validation under California Uniform Electronic Transactions Act and federal E-SIGN Act."
+        },
+        "comprehensive_esign": {
+          "risk_level": "moderate",
+          "legal_stance": "neutral",
+          "clause": "This Agreement may be executed in counterparts and by electronic signature, each of which shall constitute an original and all of which together shall constitute one agreement. Electronic signatures shall have the same legal effect as handwritten signatures.",
+          "legal_justification": "Standard electronic signature and counterpart execution provisions ensuring enforceability and execution flexibility."
+        },
+        "audit_trail": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer", 
+          "clause": "Electronic execution is authorized with audit trail documentation. Employee consents to electronic signatures and acknowledges that clicking 'I Agree' or similar electronic assent constitutes a legally binding signature. Electronic signature platforms maintain records of execution including IP addresses, timestamps, and identity verification measures.",
+          "legal_justification": "Comprehensive electronic signature framework with audit trail requirements and explicit consent to electronic execution methods."
+        }
+      }
+    },
+    "entire_agreement": {
+      "category": "general_provisions",
+      "title": "Entire Agreement",
+      "variations": {
+        "standard_integration": {
+          "risk_level": "low", 
+          "legal_stance": "neutral",
+          "clause": "This Agreement constitutes the entire agreement between the parties concerning Employee's employment and supersedes all prior negotiations, representations, or agreements relating to such employment.",
+          "legal_justification": "Standard integration clause invoking parol evidence rule to prevent introduction of extrinsic evidence."
+        },
+        "comprehensive_integration": {
+          "risk_level": "moderate",
+          "legal_stance": "pro_employer",
+          "clause": "This Agreement, together with referenced exhibits and Company equity plans, constitutes the complete agreement between Employee and Company. No amendment shall be valid unless in writing and signed by both parties. Employee acknowledges no reliance on oral representations or promises not contained herein.",
+          "legal_justification": "Comprehensive integration clause with modification requirements and disclaimer of oral representations."
+        },
+        "maximum_integration": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer", 
+          "clause": "This Agreement represents the complete and exclusive statement of terms between Employee and Company, superseding all prior negotiations, understandings, and agreements whether written or oral. Employee waives any claim based on pre-contractual representations, course of dealing, or industry custom. Modifications require written agreement signed by Company's Chief Executive Officer or designated authority.",
+          "legal_justification": "Maximum integration protection with comprehensive waiver of extrinsic claims and executive-level modification authority."
+        }
+      }
+    },
+    "severability": {
+      "category": "general_provisions",
+      "title": "Severability",
+      "variations": {
+        "standard_severability": {
+          "risk_level": "low",
+          "legal_stance": "neutral", 
+          "clause": "If any provision of this Agreement is found invalid or unenforceable, the remaining provisions shall continue in full force and effect.",
+          "legal_justification": "Basic severability clause preserving agreement enforceability despite partial invalidity."
+        },
+        "reformation_severability": {
+          "risk_level": "moderate",
+          "legal_stance": "pro_employer",
+          "clause": "If any provision is found invalid, illegal, or unenforceable, such provision shall be modified to the minimum extent necessary to make it valid and enforceable, or if incapable of modification, shall be severed, and the remainder of the Agreement shall remain in full force.",
+          "legal_justification": "Severability with reformation preference allowing courts to modify rather than delete problematic provisions."
+        },
+        "blue_pencil_severability": {
+          "risk_level": "high",
+          "legal_stance": "pro_employer", 
+          "clause": "Should any provision be deemed invalid, the parties authorize courts to reform such provision using the 'blue pencil' doctrine to achieve the maximum enforceable scope and duration. If reformation is impossible, the invalid provision shall be severed without affecting other provisions. The parties' intent is maximum enforceability of all restrictive covenants and business protection measures.",
+          "legal_justification": "Comprehensive severability with blue pencil authorization and express judicial reform consent for maximum covenant enforcement."
+        }
+      }
+    },
+    "
