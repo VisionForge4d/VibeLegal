@@ -1,0 +1,17 @@
+{
+  "name": "vibelegal-monorepo",
+  "private": true,
+  "description": "Root for the VibeLegal monorepo",
+  "scripts": {
+    "setup-db": "node setup-demo.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "pg": "^8.12.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "playwright": "^1.56.0"
+  }
+}

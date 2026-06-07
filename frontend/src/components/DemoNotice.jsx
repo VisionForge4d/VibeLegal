@@ -1,0 +1,39 @@
+import React, { useState } from 'react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Info, Users, Key, X } from 'lucide-react';
+
+const DemoNotice = () => {
+  const [isVisible, setIsVisible] = useState(true);
+
+  if (!isVisible) return null;
+
+  return (
+    <div className="fixed top-4 right-4 z-50 max-w-sm">
+      <Alert className="bg-blue-50 border-blue-200 relative">
+        <button 
+          onClick={() => setIsVisible(false)}
+          className="absolute top-2 right-2 text-blue-600 hover:text-blue-800"
+        >
+          <X className="h-4 w-4" />
+        </button>
+        <Info className="h-4 w-4 text-blue-600" />
+        <AlertDescription className="text-blue-800">
+          <div className="space-y-2">
+            <p className="font-semibold">�� VibeLegal Demo</p>
+            <div className="text-sm space-y-1">
+              <p className="flex items-center gap-1">
+                <Users className="h-3 w-3" />
+                <span>Sign up for a free account to explore the demo</span>
+              </p>
+            </div>
+            <p className="text-xs mt-2">
+              VibeLegal is in beta. Your feedback helps us improve California employment contract generation.
+            </p>
+          </div>
+        </AlertDescription>
+      </Alert>
+    </div>
+  );
+};
+
+export default DemoNotice;

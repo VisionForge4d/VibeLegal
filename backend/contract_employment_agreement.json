@@ -1,0 +1,46 @@
+{
+  "title": "California Employment Agreement",
+  "description": "A lean, jurisdiction-compliant California employment agreement. Clause stack includes CA-specific wage/hour, §2870 IP notice workflow, fair-chance background check timing, sick leave, NLRA/DTSA carve-outs, and Armendariz-compliant arbitration.",
+  "clauses": [
+    "employee_details",
+    "at_will_employment",
+    "job_title_and_duties",
+    "employee_classification",
+    "compensation",
+    "benefits",
+    "sick_leave_notice",
+    "wage_and_hour_compliance",
+    "meal_rest_breaks_ack",
+    "timekeeping_attestation",
+    "expense_reimbursement",
+    "expense_reimbursement_remote",
+    "anti_discrimination_harassment",
+    "confidentiality",
+    "nlra_protected_rights",
+    "dtsa_whistleblower_notice",
+    "ip_assignment",
+    "non_compete_prohibition",
+    "background_check_consent",
+    "ban_the_box_timing",
+    "immigration_compliance",
+    "arbitration",
+    "paga_arbitration_notice",
+    "governing_law",
+    "handbook_acknowledgment",
+    "electronic_signatures",
+    "entire_agreement",
+    "severability",
+    "notice"
+  ],
+  "options": {
+    "at_will_employment": ["for_cause_examples"],
+    "arbitration": ["jams_provider", "aaa_provider", "class_action_waiver"]
+  },
+  "tone": "plain_english",
+  "formatting": "standard_numbered",
+  "disclaimer_path": "disclaimer.md",
+  "examples": [
+    "examples/sample_employment_agreement.pdf"
+  ]
+}
+

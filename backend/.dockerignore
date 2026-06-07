@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+Dockerfile
+.dockerignore
+.env
+.env.*
+logs
+coverage
+.tmp
+# Git artifacts
+.git
+.gitignore

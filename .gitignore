@@ -1,0 +1,72 @@
+# OS + Editor junk
+.DS_Store
+*.swp
+*~
+.~lock.*
+Thumbs.db
+
+# Node/Vite build stuff
+node_modules/
+dist/
+.vite/
+.cache/
+tmp/
+temp/
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# PDF + export artifacts (optional)
+*.pdf
+release.log
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Local development files
+*.token.txt
+.token.txt
+*.local
+*.secret
+*.bak
+*.backup
+*.backup-*
+*.save
+*.save.*
+*.tmp
+*.old
+*_backup*
+*.simple-backup
+
+# Test coverage
+coverage/
+
+# VSCode / IDE settings
+.vscode/
+.idea/
+.claude/
+
+# Agent artifacts
+.agent-os/specs/
+*.spec.temp
+
+# Archive folder (historical code, not for deployment)
+archive/
+
+# Dev notes — stored in private dev-brain repo
+agent-os/
+.agent-os/
+.claude/
+BRAIN/
+BRAIN_DIGEST.md
+SWARM.md
+CLAUDE.md
+COORDINATION.md
+WARP.md
+CODEX_IMPLEMENTATION_PLAN.md
